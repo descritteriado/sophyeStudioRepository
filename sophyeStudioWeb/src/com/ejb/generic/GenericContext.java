@@ -1,0 +1,21 @@
+package com.ejb.generic;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+
+public class GenericContext {
+
+	@PersistenceContext(unitName = "skeletonJPA")
+	public EntityManager entityManager;
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	
+}

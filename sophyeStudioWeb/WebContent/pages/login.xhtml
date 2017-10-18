@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/sinSesion.xhtml">
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+			window.onload = function() {
+				document.getElementById("loginForm:username").focus();
+			}
+		</script>
+
+		<!-- <f:metadata>
+			<f:event listener="#{loginMb.invalidarSesion()}"
+				type="preRenderComponent" />
+		</f:metadata>-->
+
+
+		<h:form method="post" id="loginForm">
+			<p:growl id="mensajePrincipal" showDetail="false"
+				autoUpdate="true" closable="true" for="mensajePrincipal" />
+			<div align="center">
+				<p:panel header="#{labels['sistema.login']}" id="panelLogin"
+					style="margin-bottom:20px;width:380px">
+
+					<h:panelGrid columns="2" cellpadding="5" id="gridLogin">
+						<h:outputLabel for="username" value="Usuario:" />
+						<p:inputText value="#{loginController.username}" id="username"
+							required="true" label="username"
+							requiredMessage="Valor Requerido">
+						</p:inputText>
+						<h:outputLabel value="" />
+						<p:message for="username" />
+
+						<h:outputLabel for="password" value="Password:" />
+						<p:password value="#{loginController.password}" id="password"
+							required="true" label="password"
+							requiredMessage="Valor Requerido" />
+						<h:outputLabel value="" />
+						<p:message for="password" />
+					</h:panelGrid>
+
+					<p:commandButton id="loginButton" value="Login" update="gridLogin" process="username password @this"
+						action="#{loginController.login}" />
+
+				</p:panel>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

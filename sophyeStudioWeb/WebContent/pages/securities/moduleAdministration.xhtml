@@ -1,0 +1,151 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+<ui:include src="/pages/securities/moduleAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmModuleAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración de M&#243;dulos"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelModuleSearch" footer="" header="Filtros de B&#250;squeda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel for="description" value="M&#243;dulo:"
+						style="font-size: 12px;" />
+					<p:inputText id="description"
+						value="#{moduleAdministrationController.description}"
+						style="font-size: 12px;" />					
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewModule:gridNewModule"
+						actionListener="#{moduleAdministrationController.newModule}"
+						onclick="PF('dlgNewModule').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{moduleAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{moduleAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarModules" value="Buscar"
+						update="tableModuleResult" process="@this panelModuleSearch"
+						actionListener="#{moduleAdministrationController.consultModules('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelModuleResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableModuleResult" var="module"
+					paginatorPosition="bottom" widgetVar="tableModuleResult"
+					value="#{moduleAdministrationController.modules}" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Id" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{module.id}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripción" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{module.description}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewModule:gridNewModule"
+							process="tableModuleResult" title="Ver"
+							oncomplete="PF('dlgNewModule').show()">
+							<f:setPropertyActionListener value="#{module}"
+								target="#{moduleAdministrationController.modulo}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{moduleAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{moduleAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewModule:gridNewModule"
+							process="tableModuleResult :frmConSesion:frmDlgNewModule:gridNewModule"
+							title="Editar" oncomplete="PF('dlgNewModule').show()">
+							<f:setPropertyActionListener value="#{module}"
+								target="#{moduleAdministrationController.modulo}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{moduleAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{moduleAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus" process="tableModuleResult"
+							title="Eliminar"
+							oncomplete="PF('dlgDeleteModule').show()">
+							<f:setPropertyActionListener value="#{module}"
+								target="#{moduleAdministrationController.modulo}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{moduleAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{moduleAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewModuleRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewModule').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewModule').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteModuleRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteModule').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteModule').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

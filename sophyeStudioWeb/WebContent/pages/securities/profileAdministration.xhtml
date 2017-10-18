@@ -1,0 +1,151 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+<ui:include src="/pages/securities/profileAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmProfileAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración de Perfiles"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelProfileSearch" footer="" header="Filtros de Búsqueda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel for="description" value="Perfil:"
+						style="font-size: 12px;" />
+					<p:inputText id="description"
+						value="#{profileAdministrationController.description}"
+						style="font-size: 12px;" />					
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewProfile:gridNewProfile"
+						actionListener="#{profileAdministrationController.newProfile}"
+						onclick="PF('dlgNewProfile').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{profileAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{profileAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarProfiles" value="Buscar"
+						update="tableProfileResult" process="@this panelProfileSearch"
+						actionListener="#{profileAdministrationController.consultProfiles('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelProfileResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableProfileResult" var="profile"
+					paginatorPosition="bottom" widgetVar="tableProfileResult"
+					value="#{profileAdministrationController.profiles}" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Id" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{profile.id}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripción" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{profile.description}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewProfile:gridNewProfile"
+							process="tableProfileResult" title="Ver"
+							oncomplete="PF('dlgNewProfile').show()">
+							<f:setPropertyActionListener value="#{profile}"
+								target="#{profileAdministrationController.perfil}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{profileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{profileAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewProfile:gridNewProfile"
+							process="tableProfileResult :frmConSesion:frmDlgNewProfile:gridNewProfile"
+							title="Editar" oncomplete="PF('dlgNewProfile').show()">
+							<f:setPropertyActionListener value="#{profile}"
+								target="#{profileAdministrationController.perfil}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{profileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{profileAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus" process="tableProfileResult"
+							title="Eliminar"
+							oncomplete="PF('dlgDeleteProfile').show()">
+							<f:setPropertyActionListener value="#{profile}"
+								target="#{profileAdministrationController.perfil}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{profileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{profileAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewProfileRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewProfile').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewProfile').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteProfileRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteProfile').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteProfile').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

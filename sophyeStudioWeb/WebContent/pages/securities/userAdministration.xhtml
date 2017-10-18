@@ -1,0 +1,183 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+<ui:include src="/pages/securities/userAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmUserAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración de Usuarios"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelUserSerch" footer="" header="Filtros de Búsqueda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="4" cellpadding="4">
+					<p:outputLabel for="userName" value="Usuario:"
+						style="font-size: 12px;" />
+					<p:inputText id="userName"
+						value="#{userAdministrationController.userName}"
+						style="font-size: 12px;" />
+
+					<p:outputLabel for="userStatus" value="Estado:"
+						style="font-size: 12px;" />
+					<p:selectOneMenu id="userStatus"
+						value="#{userAdministrationController.status}"
+						style="width:125px; font-size: 12px;">
+						<f:selectItem itemValue="false" itemLabel="Activo" />
+						<f:selectItem itemValue="true" itemLabel="Bloqueado" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="name" value="Nombres:" style="font-size: 12px;" />
+					<p:inputText id="name" value="#{userAdministrationController.name}"
+						style="font-size: 12px;" />
+
+					<p:outputLabel for="lastName" value="Apellidos:"
+						style="font-size: 12px;" />
+					<p:inputText id="lastName"
+						value="#{userAdministrationController.lastName}"
+						style="font-size: 12px;" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewUser:gridNewUser"
+						actionListener="#{userAdministrationController.newUser}"
+						onclick="PF('dlgNewUser').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{userAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{userAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarUsers1" value="Buscar"
+						update="tableUserResult" process="@this panelUserSerch"
+						actionListener="#{userAdministrationController.consultUsers('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelUserResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableUserResult" var="user"
+					paginatorPosition="bottom" widgetVar="tableUserResult"
+					value="#{userAdministrationController.users}" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Usuario" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{user.username}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Nombres" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{user.names}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Apellidos" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{user.lastnames}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Estado" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{user.status?'Bloqueado':'Activo'}"
+							style="font-size: 11px;" />
+					</p:column>
+
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewUser:gridNewUser"
+							process="tableUserResult" title="Ver"
+							oncomplete="PF('dlgNewUser').show()">
+							<f:setPropertyActionListener value="#{user}"
+								target="#{userAdministrationController.usuario}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{userAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{userAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewUser:gridNewUser"
+							process="tableUserResult :frmConSesion:frmDlgNewUser:gridNewUser"
+							title="Editar" oncomplete="PF('dlgNewUser').show()">
+							<f:setPropertyActionListener value="#{user}"
+								target="#{userAdministrationController.usuario}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{userAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{userAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus" process="tableUserResult"
+							title="Eliminar"
+							oncomplete="PF('dlgDeleteUser').show()">
+							<f:setPropertyActionListener value="#{user}"
+								target="#{userAdministrationController.usuario}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{userAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{userAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewUserRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewUser').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewUser').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteUserRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteUser').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteUser').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,204 @@
+package com.jpa.model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import com.util.general.UtilsX;
+
+import java.util.Date;
+
+
+/**
+ * The persistent class for the tseguser database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Tseguser.findAll", query="SELECT t FROM Tseguser t")
+public class Tseguser implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+
+	private String address;
+
+	@Temporal(TemporalType.DATE)
+	private Date birthday;
+
+	private Boolean deleted;
+
+	private String email;
+
+	@Temporal(TemporalType.DATE)
+	private Date expirationdate;
+
+	private Boolean istemporal;
+
+	private String lastnames;
+
+	@Temporal(TemporalType.DATE)
+	private Date lockdate;
+
+	private String names;
+
+	private byte[] password;
+
+	private Integer phone1;
+
+	private Integer phone2;
+
+	private Boolean status;
+
+	private String username;
+	
+	@Transient
+	private String keyInCourse;
+
+	public Tseguser() {
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Date getBirthday() {
+		return this.birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getExpirationdate() {
+		return this.expirationdate;
+	}
+
+	public void setExpirationdate(Date expirationdate) {
+		this.expirationdate = expirationdate;
+	}
+
+	public Boolean getIstemporal() {
+		return this.istemporal;
+	}
+
+	public void setIstemporal(Boolean istemporal) {
+		this.istemporal = istemporal;
+	}
+
+	public String getLastnames() {
+		return this.lastnames;
+	}
+
+	public void setLastnames(String lastnames) {
+		this.lastnames = lastnames;
+	}
+
+	public Date getLockdate() {
+		return this.lockdate;
+	}
+
+	public void setLockdate(Date lockdate) {
+		this.lockdate = lockdate;
+	}
+
+	public String getNames() {
+		return this.names;
+	}
+
+	public void setNames(String names) {
+		this.names = names;
+	}
+
+	public byte[] getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(byte[] password) {
+		this.password = password;
+	}
+
+	public Integer getPhone1() {
+		return this.phone1;
+	}
+
+	public void setPhone1(Integer phone1) {
+		this.phone1 = phone1;
+	}
+
+	public Integer getPhone2() {
+		return this.phone2;
+	}
+
+	public void setPhone2(Integer phone2) {
+		this.phone2 = phone2;
+	}
+
+	public Boolean getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getKeyInCourse() {
+		String val="";
+		
+		try {
+			val = UtilsX.descifra(this.getPassword());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return val;
+	}
+
+	public void setKeyInCourse(String keyInCourse) {
+		
+		this.keyInCourse = keyInCourse;
+		try {
+			this.setPassword(UtilsX.cifra(keyInCourse));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

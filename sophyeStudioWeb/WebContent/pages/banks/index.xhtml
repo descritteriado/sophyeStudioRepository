@@ -1,0 +1,27 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="contenido">
+		<h:form id="consultaLog">
+			<p:dialog id="dlgLog" modal="true" widgetVar="statusDialog"
+				draggable="false" closable="false" resizable="false"
+				header="Procesando..." style="font-size:xx-small;">
+				<p:graphicImage library="images" name="ajax-loader.gif" />
+			</p:dialog>
+		
+			<script type="text/javascript">
+				function start() {
+				    PF('statusDialog').show();
+				}
+				 
+				function stop() {
+				    PF('statusDialog').hide();
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

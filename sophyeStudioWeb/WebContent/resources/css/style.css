@@ -1,0 +1,60 @@
+.tamanioFuente {
+	font-size: 10px;
+	color: Black;
+}
+
+.highlight1 {
+	background: #CBD8E4;
+}
+
+.titulos {
+	font-size: medium;
+	font-weight: bold;
+	color: Black;
+}
+
+.titReporte {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.scroll {
+	height: 500px;
+	width: 100%;
+}
+
+.negrita {
+	font-weight: bold;
+	color: Black;
+}
+
+.center {
+	text-align: center;
+}
+
+.derecha {
+	text-align: right;
+}
+
+.izquierda {
+	text-align: left;
+}
+
+li.ui-selectonemenu-item {
+	font-size: 12px;
+}
+
+.clasePanel {
+	height: 500px;
+	border-style: solid;
+	border-color: Silver;
+	border-width: thin;
+	vertical-align: top;
+}
+
+.prow1{
+
+}
+.prow2{
+	background-color: #f1f6f8;
+}
