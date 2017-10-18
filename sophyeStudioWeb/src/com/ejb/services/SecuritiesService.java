@@ -55,6 +55,7 @@ public class SecuritiesService  {
 	 */
 	public boolean validateCredentials(String user, byte[] password) {
 
+		System.out.println("test");
 		return userDao.validateCredentials(user, password);
 
 	}
@@ -70,6 +71,7 @@ public class SecuritiesService  {
 	public List<Tseguser> getUsers(String username, String name, String lastName, Boolean status) throws Exception {
 
 		List<Tseguser> users = null;
+		System.out.println("test");
 
 		users = userDao.getUsers(username, name, lastName, status);
 
