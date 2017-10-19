@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="dlgDeleteTransaction" modal="true"
+	widgetVar="dlgDeleteTransaction" closable="false" resizable="false"
+	header="Eliminar Transacci&#243;n" style="font-size:xx-medium ;">
+	<h:panelGrid id="gridDeleteTransaction" columns="1">
+
+		<p:outputLabel />
+		<p:outputLabel />
+		<p:outputLabel />
+		<p:outputLabel value="Desea eliminar el registro seleccionado?"
+			style="font-size: 13px;" />
+		<p:outputLabel />
+		<p:outputLabel />
+		<p:outputLabel />
+		<p:separator />
+		<div align="center">
+			<h:panelGrid columns="2">
+				<p:commandButton value="Aceptar"
+					update="gridDeleteTransaction :frmConSesion:frmTransactionAdministration:panelTransactionResult"
+					actionListener="#{transactionAdministrationController.deleteTransaction}"
+					oncomplete="handleDeleteTransactionRequest(xhr, status, args)" />
+				<p:commandButton value="Cancelar"
+					onclick="PF('dlgDeleteTransaction').hide();" process="@this" />
+			</h:panelGrid>
+		</div>
+		<p:separator />
+
+	</h:panelGrid>
+</p:dialog>
+
+<p:dialog id="dlgNewTransaction" modal="true"
+	widgetVar="dlgNewTransaction" closable="true" resizable="false"
+	header="Transacci&#243;n" style="font-size:xx-medium ;">
+	<h:form id="frmDlgNewTransaction">
+
+		<h:panelGrid id="gridNewTransaction" columns="1">
+			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
+				closable="true" />
+
+			<h:panelGrid id="gridNewTransaction1" columns="2" cellpadding="4">
+
+				<p:outputLabel for="editId" value="Id:" style="font-size: 12px;" />
+				<p:outputLabel id="editId"
+					value="#{transactionAdministrationController.transaction.id}"
+					style="font-size: 12px;" />
+
+				<p:outputLabel for="editDescription" value="Descripción:"
+					style="font-size: 12px;" />
+				<p:inputText id="editDescription" required="true"
+					value="#{transactionAdministrationController.transaction.description}"
+					style="font-size: 12px;"
+					rendered="#{transactionAdministrationController.edition}" />
+				<p:outputLabel id="viewDescription"
+					value="#{transactionAdministrationController.transaction.description}"
+					style="font-size: 12px;"
+					rendered="#{!transactionAdministrationController.edition}" />
+
+				<p:outputLabel for="editUrl" value="Url:"
+					style="font-size: 12px;" />
+				<p:inputText id="editUrl" required="true"
+					value="#{transactionAdministrationController.transaction.url}"
+					style="font-size: 12px;"
+					rendered="#{transactionAdministrationController.edition}" />
+				<p:outputLabel id="viewUrl"
+					value="#{transactionAdministrationController.transaction.url}"
+					style="font-size: 12px;"
+					rendered="#{!transactionAdministrationController.edition}" />
+			</h:panelGrid>
+			<p:separator />
+			<h:panelGrid columns="2" cellpadding="4">
+				<p:commandButton value="Guardar" id="btnGuardar"
+					update=":frmConSesion:frmDlgNewTransaction:gridNewTransaction :frmConSesion:frmTransactionAdministration:panelTransactionResult"
+					process=":frmConSesion:frmDlgNewTransaction:gridNewTransaction @this"
+					actionListener="#{transactionAdministrationController.processTransaction}"
+					oncomplete="handleNewTransactionRequest(xhr, status, args)"
+					rendered="#{transactionAdministrationController.edition}" />
+				<p:commandButton value="Aceptar"
+					onclick="PF('dlgNewTransaction').hide();" process="@this"
+					rendered="#{!transactionAdministrationController.edition}" />
+				<p:commandButton value="Cancelar"
+					onclick="PF('dlgNewTransaction').hide();" process="@this" />
+			</h:panelGrid>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+
+
+<p:dialog id="dlgProcessTransactionAdmin" modal="true"
+	widgetVar="statusDialog" draggable="false" closable="false"
+	resizable="false" header="Procesando..." style="font-size:xx-small;">
+	<p:graphicImage library="images" name="ajax-loader.gif" />
+</p:dialog>
+</html>
