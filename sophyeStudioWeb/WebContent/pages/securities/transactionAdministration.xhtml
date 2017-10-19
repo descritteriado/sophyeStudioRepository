@@ -1,0 +1,155 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+<ui:include src="/pages/securities/transactionAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmTransactionAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración de Transacciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelTransactionSearch" footer="" header="Filtros de B&#250;squeda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel for="description" value="Transacci&#243;n:"
+						style="font-size: 12px;" />
+					<p:inputText id="description"
+						value="#{transactionAdministrationController.description}"
+						style="font-size: 12px;" />					
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewTransaction:gridNewTransaction"
+						actionListener="#{transactionAdministrationController.newTransaction}"
+						onclick="PF('dlgNewTransaction').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{transactionAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{transactionAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarTransactions" value="Buscar"
+						update="tableTransactionResult" process="@this panelTransactionSearch"
+						actionListener="#{transactionAdministrationController.consultTransactions('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelTransactionResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableTransactionResult" var="transaction"
+					paginatorPosition="bottom" widgetVar="tableTransactionResult"
+					value="#{transactionAdministrationController.transactions}" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Id" width="10px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{transaction.id}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripci&#243;n" width="150px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{transaction.description}" style="font-size: 11px;" />
+					</p:column>
+					<p:column headerText="Url" width="250px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{transaction.url}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:28px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewTransaction:gridNewTransaction"
+							process="tableTransactionResult" title="Ver"
+							oncomplete="PF('dlgNewTransaction').show()">
+							<f:setPropertyActionListener value="#{transaction}"
+								target="#{transactionAdministrationController.transaction}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{transactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{transactionAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:28px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewTransaction:gridNewTransaction"
+							process="tableTransactionResult :frmConSesion:frmDlgNewTransaction:gridNewTransaction"
+							title="Editar" oncomplete="PF('dlgNewTransaction').show()">
+							<f:setPropertyActionListener value="#{transaction}"
+								target="#{transactionAdministrationController.transaction}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{transactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{transactionAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus" process="tableTransactionResult"
+							title="Eliminar"
+							oncomplete="PF('dlgDeleteTransaction').show()">
+							<f:setPropertyActionListener value="#{transaction}"
+								target="#{transactionAdministrationController.transaction}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{transactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{transactionAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewTransactionRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewTransaction').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewTransaction').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteTransactionRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteTransaction').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteTransaction').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

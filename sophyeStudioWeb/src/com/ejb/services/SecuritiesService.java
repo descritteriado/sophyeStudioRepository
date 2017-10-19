@@ -9,9 +9,11 @@ import org.apache.log4j.Logger;
 
 import com.dao.ModuleDao;
 import com.dao.ProfileDao;
+import com.dao.TransactionDao;
 import com.dao.UserDao;
 import com.jpa.model.Tsegmodule;
 import com.jpa.model.Tsegprofile;
+import com.jpa.model.Tsegtransaction;
 import com.jpa.model.Tseguser;
 
 @Stateless
@@ -27,6 +29,9 @@ public class SecuritiesService  {
 	
 	@EJB
 	ModuleDao<Tsegmodule> moduleDao;
+	
+	@EJB
+	TransactionDao<Tsegtransaction> transactionDao;
 
 	/**
 	 * Metodo que obtiene el Menu
@@ -105,6 +110,22 @@ public class SecuritiesService  {
 
 		return modules;
 	}
+	
+	/**
+	 * Metodo para consultar las transacciones dados ciertos parametros
+	 * 
+	 * @param transactionName
+	 * @return Lista de modulos List<Tsegtransaction>
+	 */
+	public List<Tsegtransaction> getTransactions(String transactionName) throws Exception {
+
+		List<Tsegtransaction> transactions = null;
+
+		transactions = transactionDao.getTransactions(transactionName);
+
+		return transactions;
+	}
+
 
 	/**
 	 * Metodo para guardar o actualizar un Usuario
@@ -154,6 +175,26 @@ public class SecuritiesService  {
 	public boolean deleteModule(Tsegmodule module) {
 
 		return moduleDao.remove(module);
+	}
+	
+	/**
+	 * Metodo para guardar o actualizar una Transacion
+	 * @param Tsegtransaction transaction
+	 * @return boolean 
+	 */
+	public boolean mergeTransaction(Tsegtransaction transaction) {
+
+		return transactionDao.merge(transaction);
+	}
+
+	/**
+	 * Metodo para eliminar una Transaccion 
+	 * @param Tsegtransaction transaction
+	 * @return boolean
+	 */
+	public boolean deleteTransaction(Tsegtransaction transaction) {
+
+		return transactionDao.remove(transaction);
 	}
 
 }
