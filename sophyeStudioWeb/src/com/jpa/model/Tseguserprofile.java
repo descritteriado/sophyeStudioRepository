@@ -19,12 +19,12 @@ public class Tseguserprofile implements Serializable {
 
 	//bi-directional many-to-one association to Tsegprofile
 	@ManyToOne
-	@JoinColumn(name="\"idProfiles\"")
+	@JoinColumn(name="idprofile")
 	private Tsegprofile tsegprofile;
 
 	//bi-directional many-to-one association to Tseguser
 	@ManyToOne
-	@JoinColumn(name="\"idUsers\"")
+	@JoinColumn(name="iduser")
 	private Tseguser tseguser;
 
 	public Tseguserprofile() {

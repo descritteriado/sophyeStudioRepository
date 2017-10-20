@@ -50,22 +50,51 @@
 					value="#{transactionAdministrationController.transaction.id}"
 					style="font-size: 12px;" />
 
+				<p:outputLabel for="editIdModule" value="M&#243;dulo:"
+					style="font-size: 12px;" />
+
+				<h:selectOneMenu id="editIdModule" required="true"
+					value="#{transactionAdministrationController.transaction.tsegmodule.id}"
+					style="font-size: 12px;  width:300px;"
+					rendered="#{transactionAdministrationController.edition}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems
+						value="#{transactionAdministrationController.modules}"
+						var="modules" itemValue="#{modules.id}"
+						itemLabel="#{modules.description}" />
+				</h:selectOneMenu>
+
+				<p:outputLabel id="viewIdModule"
+					value="#{transactionAdministrationController.transaction.tsegmodule.description}"
+					style="font-size: 12px;"
+					rendered="#{!transactionAdministrationController.edition}" />
+
 				<p:outputLabel for="editDescription" value="Descripción:"
 					style="font-size: 12px;" />
-				<p:inputText id="editDescription" required="true"
+				<p:inputText id="editDescription" required="true" 
 					value="#{transactionAdministrationController.transaction.description}"
-					style="font-size: 12px;"
+					style="font-size: 12px; width:300px;"
 					rendered="#{transactionAdministrationController.edition}" />
 				<p:outputLabel id="viewDescription"
 					value="#{transactionAdministrationController.transaction.description}"
 					style="font-size: 12px;"
 					rendered="#{!transactionAdministrationController.edition}" />
 
-				<p:outputLabel for="editUrl" value="Url:"
+				<p:outputLabel for="editComent" value="Comentario:"
 					style="font-size: 12px;" />
+				<p:inputText id="editComent" required="false"
+					value="#{transactionAdministrationController.transaction.coment}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{transactionAdministrationController.edition}" />
+				<p:outputLabel id="viewComent"
+					value="#{transactionAdministrationController.transaction.coment}"
+					style="font-size: 12px;"
+					rendered="#{!transactionAdministrationController.edition}" />
+
+				<p:outputLabel for="editUrl" value="Url:" style="font-size: 12px;" />
 				<p:inputText id="editUrl" required="true"
 					value="#{transactionAdministrationController.transaction.url}"
-					style="font-size: 12px;"
+					style="font-size: 12px; width:300px;"
 					rendered="#{transactionAdministrationController.edition}" />
 				<p:outputLabel id="viewUrl"
 					value="#{transactionAdministrationController.transaction.url}"

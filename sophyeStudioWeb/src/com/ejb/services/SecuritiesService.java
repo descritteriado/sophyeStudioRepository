@@ -11,10 +11,12 @@ import com.dao.ModuleDao;
 import com.dao.ProfileDao;
 import com.dao.TransactionDao;
 import com.dao.UserDao;
+import com.dao.UserProfileDao;
 import com.jpa.model.Tsegmodule;
 import com.jpa.model.Tsegprofile;
 import com.jpa.model.Tsegtransaction;
 import com.jpa.model.Tseguser;
+import com.jpa.model.Tseguserprofile;
 
 @Stateless
 public class SecuritiesService  {
@@ -32,6 +34,9 @@ public class SecuritiesService  {
 	
 	@EJB
 	TransactionDao<Tsegtransaction> transactionDao;
+	
+	@EJB
+	UserProfileDao<Tseguserprofile> userProfileDao;
 
 	/**
 	 * Metodo que obtiene el Menu
@@ -126,6 +131,21 @@ public class SecuritiesService  {
 		return transactions;
 	}
 
+	/**
+	 * Metodo para consultar la data dados ciertos parametros
+	 * 
+	 * @param username
+	 * @param profilename
+	 * @return List<Tseguserprofile>
+	 */
+	public List<Tseguserprofile> getUsersProfiles(String username, String profilename) throws Exception {
+
+		List<Tseguserprofile> userProfile = null;
+
+		userProfile = userProfileDao.getUsersProfiles(username, profilename);
+
+		return userProfile;
+	}
 
 	/**
 	 * Metodo para guardar o actualizar un Usuario
@@ -195,6 +215,26 @@ public class SecuritiesService  {
 	public boolean deleteTransaction(Tsegtransaction transaction) {
 
 		return transactionDao.remove(transaction);
+	}
+	
+	/**
+	 * Metodo para guardar o actualizar Tseguserprofile
+	 * @param Tseguserprofile userPofile
+	 * @return boolean 
+	 */
+	public boolean mergeUsersProfiles(Tseguserprofile userPofile) {
+
+		return userProfileDao.merge(userPofile);
+	}
+
+	/**
+	 * Metodo para eliminar Tseguserprofile
+	 * @param Tseguserprofile userPofile
+	 * @return boolean
+	 */
+	public boolean deleteUsersProfiles(Tseguserprofile userPofile) {
+
+		return userProfileDao.remove(userPofile);
 	}
 
 }

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 import com.ejb.services.SecuritiesService;
+import com.jpa.model.Tsegmodule;
 import com.jpa.model.Tsegtransaction;
 import com.util.general.UtilsX;
 import com.utils.Constants;
@@ -22,6 +23,7 @@ public class TransactionAdministrationController {
 	private String description;
 	private List<Tsegtransaction> transactions;
 	private Tsegtransaction transaccion;
+	private List<Tsegmodule> modules;
 	private boolean edition;
 	private Integer actionType;
 
@@ -30,14 +32,23 @@ public class TransactionAdministrationController {
 	@EJB
 	SecuritiesService securitiesService;
 
+
 	@PostConstruct
 	public void init() {
+		try {
+			modules = securitiesService.getModules("");
+		} catch (Exception e) {
+			logger.error(e);
+
+		}
 		transaccion = new Tsegtransaction();
+		transaccion.setTsegmodule(new Tsegmodule());
 		edition = true;
 	}
 
 	public void newTransaction() {
 		transaccion = new Tsegtransaction();
+		transaccion.setTsegmodule(new Tsegmodule());
 		edition = true;
 	}
 
@@ -60,9 +71,9 @@ public class TransactionAdministrationController {
 
 		if (origin.equals("front")) {
 			if (result) {
-				UtilsX.addInfoMessage("B"+Constants.u_acentuada+"queda Exitosa", null);
+				UtilsX.addInfoMessage("B" + Constants.u_acentuada + "queda Exitosa", null);
 			} else {
-				UtilsX.addErrorMessage("Se produjo un error al realizar la b"+Constants.u_acentuada+"squeda", null);
+				UtilsX.addErrorMessage("Se produjo un error al realizar la b" + Constants.u_acentuada + "squeda", null);
 			}
 		}
 
@@ -179,6 +190,14 @@ public class TransactionAdministrationController {
 
 	public void setTransaction(Tsegtransaction transaccion) {
 		this.transaccion = transaccion;
+	}
+
+	public List<Tsegmodule> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Tsegmodule> modules) {
+		this.modules = modules;
 	}
 
 }

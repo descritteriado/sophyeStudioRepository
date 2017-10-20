@@ -5,9 +5,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-<p:dialog id="dlgDeleteModule" modal="true"
-	widgetVar="dlgDeleteModule" closable="false" resizable="false"
-	header="Eliminar M&#243;dulo" style="font-size:xx-medium ;">
+<p:dialog id="dlgDeleteModule" modal="true" widgetVar="dlgDeleteModule"
+	closable="false" resizable="false" header="Eliminar M&#243;dulo"
+	style="font-size:xx-medium ;">
 	<h:panelGrid id="gridDeleteModule" columns="1">
 
 		<p:outputLabel />
@@ -45,20 +45,30 @@
 
 			<h:panelGrid id="gridNewModule1" columns="2" cellpadding="4">
 
-				<p:outputLabel for="editId" value="Id:"
-					style="font-size: 12px;" />				
+				<p:outputLabel for="editId" value="Id:" style="font-size: 12px;" />
 				<p:outputLabel id="editId"
 					value="#{moduleAdministrationController.modulo.id}"
-					style="font-size: 12px;"/>
+					style="font-size: 12px;" />
 
 				<p:outputLabel for="editDescription" value="Descripción:"
 					style="font-size: 12px;" />
 				<p:inputText id="editDescription" required="true"
 					value="#{moduleAdministrationController.modulo.description}"
-					style="font-size: 12px;"
+					style="font-size: 12px; width:300px;"
 					rendered="#{moduleAdministrationController.edition}" />
 				<p:outputLabel id="viewDescription"
 					value="#{moduleAdministrationController.modulo.description}"
+					style="font-size: 12px;"
+					rendered="#{!moduleAdministrationController.edition}" />
+
+				<p:outputLabel for="editComent" value="Comentario:"
+					style="font-size: 12px;" />
+				<p:inputText id="editComent" required="false"
+					value="#{moduleAdministrationController.modulo.coment}"
+					style="font-size: 12px;  width:300px;"
+					rendered="#{moduleAdministrationController.edition}" />
+				<p:outputLabel id="viewComent"
+					value="#{moduleAdministrationController.modulo.coment}"
 					style="font-size: 12px;"
 					rendered="#{!moduleAdministrationController.edition}" />
 			</h:panelGrid>

@@ -22,9 +22,9 @@ public class Tsegprofile implements Serializable {
 
 	private String description;
 
-	//bi-directional many-to-one association to Tsegprofilemodule
+	//bi-directional many-to-one association to Tsegprofiletransaction
 	@OneToMany(mappedBy="tsegprofile")
-	private List<Tsegprofilemodule> tsegprofilemodules;
+	private List<Tsegprofiletransaction> tsegprofiletransactions;
 
 	//bi-directional many-to-one association to Tseguserprofile
 	@OneToMany(mappedBy="tsegprofile")
@@ -57,26 +57,26 @@ public class Tsegprofile implements Serializable {
 		this.description = description;
 	}
 
-	public List<Tsegprofilemodule> getTsegprofilemodules() {
-		return this.tsegprofilemodules;
+	public List<Tsegprofiletransaction> getTsegprofiletransactions() {
+		return this.tsegprofiletransactions;
 	}
 
-	public void setTsegprofilemodules(List<Tsegprofilemodule> tsegprofilemodules) {
-		this.tsegprofilemodules = tsegprofilemodules;
+	public void setTsegprofiletransactions(List<Tsegprofiletransaction> tsegprofiletransactions) {
+		this.tsegprofiletransactions = tsegprofiletransactions;
 	}
 
-	public Tsegprofilemodule addTsegprofilemodule(Tsegprofilemodule tsegprofilemodule) {
-		getTsegprofilemodules().add(tsegprofilemodule);
-		tsegprofilemodule.setTsegprofile(this);
+	public Tsegprofiletransaction addTsegprofiletransaction(Tsegprofiletransaction tsegprofiletransaction) {
+		getTsegprofiletransactions().add(tsegprofiletransaction);
+		tsegprofiletransaction.setTsegprofile(this);
 
-		return tsegprofilemodule;
+		return tsegprofiletransaction;
 	}
 
-	public Tsegprofilemodule removeTsegprofilemodule(Tsegprofilemodule tsegprofilemodule) {
-		getTsegprofilemodules().remove(tsegprofilemodule);
-		tsegprofilemodule.setTsegprofile(null);
+	public Tsegprofiletransaction removeTsegprofiletransaction(Tsegprofiletransaction tsegprofiletransaction) {
+		getTsegprofiletransactions().remove(tsegprofiletransaction);
+		tsegprofiletransaction.setTsegprofile(null);
 
-		return tsegprofilemodule;
+		return tsegprofiletransaction;
 	}
 
 	public List<Tseguserprofile> getTseguserprofiles() {

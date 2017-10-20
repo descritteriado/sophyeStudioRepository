@@ -2,10 +2,8 @@ package com.jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.util.general.UtilsX;
-
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -51,9 +49,10 @@ public class Tseguser implements Serializable {
 	private Boolean status;
 
 	private String username;
-	
-	@Transient
-	private String keyInCourse;
+
+	//bi-directional many-to-one association to Tseguserprofile
+	@OneToMany(mappedBy="tseguser")
+	private List<Tseguserprofile> tseguserprofiles;
 
 	public Tseguser() {
 	}
@@ -178,27 +177,26 @@ public class Tseguser implements Serializable {
 		this.username = username;
 	}
 
-	public String getKeyInCourse() {
-		String val="";
-		
-		try {
-			val = UtilsX.descifra(this.getPassword());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return val;
+	public List<Tseguserprofile> getTseguserprofiles() {
+		return this.tseguserprofiles;
 	}
 
-	public void setKeyInCourse(String keyInCourse) {
-		
-		this.keyInCourse = keyInCourse;
-		try {
-			this.setPassword(UtilsX.cifra(keyInCourse));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setTseguserprofiles(List<Tseguserprofile> tseguserprofiles) {
+		this.tseguserprofiles = tseguserprofiles;
+	}
+
+	public Tseguserprofile addTseguserprofile(Tseguserprofile tseguserprofile) {
+		getTseguserprofiles().add(tseguserprofile);
+		tseguserprofile.setTseguser(this);
+
+		return tseguserprofile;
+	}
+
+	public Tseguserprofile removeTseguserprofile(Tseguserprofile tseguserprofile) {
+		getTseguserprofiles().remove(tseguserprofile);
+		tseguserprofile.setTseguser(null);
+
+		return tseguserprofile;
 	}
 
 }

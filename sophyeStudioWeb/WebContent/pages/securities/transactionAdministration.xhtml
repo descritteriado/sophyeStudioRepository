@@ -64,12 +64,16 @@
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.id}" style="font-size: 11px;" />
 					</p:column>
-
+					<p:column headerText="M&#243;dulo" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{transaction.tsegmodule.description}" style="font-size: 11px;" />
+					</p:column>
+					
 					<p:column headerText="Descripci&#243;n" width="150px;"
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.description}" style="font-size: 11px;" />
 					</p:column>
-					<p:column headerText="Url" width="250px;"
+					<p:column headerText="Url" width="220px;"
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.url}" style="font-size: 11px;" />
 					</p:column>

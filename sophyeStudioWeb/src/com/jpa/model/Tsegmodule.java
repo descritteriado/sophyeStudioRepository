@@ -22,13 +22,9 @@ public class Tsegmodule implements Serializable {
 
 	private String description;
 
-	//bi-directional many-to-one association to Tsegmoduletransaction
+	//bi-directional many-to-one association to Tsegtransaction
 	@OneToMany(mappedBy="tsegmodule")
-	private List<Tsegmoduletransaction> tsegmoduletransactions;
-
-	//bi-directional many-to-one association to Tsegprofilemodule
-	@OneToMany(mappedBy="tsegmodule")
-	private List<Tsegprofilemodule> tsegprofilemodules;
+	private List<Tsegtransaction> tsegtransactions;
 
 	public Tsegmodule() {
 	}
@@ -57,48 +53,26 @@ public class Tsegmodule implements Serializable {
 		this.description = description;
 	}
 
-	public List<Tsegmoduletransaction> getTsegmoduletransactions() {
-		return this.tsegmoduletransactions;
+	public List<Tsegtransaction> getTsegtransactions() {
+		return this.tsegtransactions;
 	}
 
-	public void setTsegmoduletransactions(List<Tsegmoduletransaction> tsegmoduletransactions) {
-		this.tsegmoduletransactions = tsegmoduletransactions;
+	public void setTsegtransactions(List<Tsegtransaction> tsegtransactions) {
+		this.tsegtransactions = tsegtransactions;
 	}
 
-	public Tsegmoduletransaction addTsegmoduletransaction(Tsegmoduletransaction tsegmoduletransaction) {
-		getTsegmoduletransactions().add(tsegmoduletransaction);
-		tsegmoduletransaction.setTsegmodule(this);
+	public Tsegtransaction addTsegtransaction(Tsegtransaction tsegtransaction) {
+		getTsegtransactions().add(tsegtransaction);
+		tsegtransaction.setTsegmodule(this);
 
-		return tsegmoduletransaction;
+		return tsegtransaction;
 	}
 
-	public Tsegmoduletransaction removeTsegmoduletransaction(Tsegmoduletransaction tsegmoduletransaction) {
-		getTsegmoduletransactions().remove(tsegmoduletransaction);
-		tsegmoduletransaction.setTsegmodule(null);
+	public Tsegtransaction removeTsegtransaction(Tsegtransaction tsegtransaction) {
+		getTsegtransactions().remove(tsegtransaction);
+		tsegtransaction.setTsegmodule(null);
 
-		return tsegmoduletransaction;
-	}
-
-	public List<Tsegprofilemodule> getTsegprofilemodules() {
-		return this.tsegprofilemodules;
-	}
-
-	public void setTsegprofilemodules(List<Tsegprofilemodule> tsegprofilemodules) {
-		this.tsegprofilemodules = tsegprofilemodules;
-	}
-
-	public Tsegprofilemodule addTsegprofilemodule(Tsegprofilemodule tsegprofilemodule) {
-		getTsegprofilemodules().add(tsegprofilemodule);
-		tsegprofilemodule.setTsegmodule(this);
-
-		return tsegprofilemodule;
-	}
-
-	public Tsegprofilemodule removeTsegprofilemodule(Tsegprofilemodule tsegprofilemodule) {
-		getTsegprofilemodules().remove(tsegprofilemodule);
-		tsegprofilemodule.setTsegmodule(null);
-
-		return tsegprofilemodule;
+		return tsegtransaction;
 	}
 
 }

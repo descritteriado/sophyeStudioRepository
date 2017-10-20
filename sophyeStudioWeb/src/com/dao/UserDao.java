@@ -14,10 +14,10 @@ import com.ejb.generic.GenericDaoImpl;
 import com.jpa.model.Tseguser;
 
 @Stateless
-public class UserDao<Entity> extends GenericDaoImpl<Entity>{
+public class UserDao<Entity> extends GenericDaoImpl<Entity> {
 
 	final static Logger logger = Logger.getLogger(UserDao.class);
-	
+
 	@PersistenceContext(unitName = "skeletonJPA")
 	private EntityManager entityManager;
 
@@ -25,11 +25,10 @@ public class UserDao<Entity> extends GenericDaoImpl<Entity>{
 	public List<Object> getMenu(String username, String idModule) {
 
 		Query query = entityManager.createQuery("SELECT m.description as modDesc, t.description as traDesc, t.url "
-				+ "FROM Tseguser as u, Tseguserprofile as up, Tsegprofilemodule as pm, "
-				+ "Tsegmoduletransaction as mt, Tsegtransaction as t, Tsegmodule as m "
-				+ "WHERE u.deleted= false and u.id = up.tseguser.id " + "and up.tsegprofile.id = pm.tsegprofile.id "
-				+ "and pm.tsegmodule.id = mt.tsegmodule.id " + "and mt.tsegtransaction.id = t.id "
-				+ "and mt.tsegmodule.id = m.id " + "and u.username= :userName  and m.id= :idModule");
+				+ "FROM Tseguser as u, Tseguserprofile as up, Tsegprofiletransaction as pt, "
+				+ "Tsegtransaction as t, Tsegmodule as m " + "WHERE u.deleted= false and u.id = up.tseguser.id "
+				+ "and up.tsegprofile.id = pt.tsegprofile.id " + "and pt.tsegtransaction.id = t.id "
+				+ "and t.tsegmodule.id = m.id " + "and u.username= :userName  and m.id= :idModule");
 		query.setParameter("userName", username);
 		query.setParameter("idModule", Integer.parseInt(idModule));
 		List<Object> transacciones = query.getResultList();
@@ -50,7 +49,6 @@ public class UserDao<Entity> extends GenericDaoImpl<Entity>{
 		}
 
 	}
-
 
 	/**
 	 * Metodo para consultar los usuarios dados ciertos parametros
@@ -88,7 +86,6 @@ public class UserDao<Entity> extends GenericDaoImpl<Entity>{
 		return users;
 	}
 
-	
 	@Override
 	public boolean merge(Entity entity) {
 		try {
@@ -111,5 +108,5 @@ public class UserDao<Entity> extends GenericDaoImpl<Entity>{
 			return false;
 		}
 	}
-	
+
 }
