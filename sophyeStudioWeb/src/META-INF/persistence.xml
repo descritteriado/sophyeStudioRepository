@@ -3,12 +3,15 @@
 	<persistence-unit name="skeletonJPA">
 	 <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:jboss/datasources/skeletonDS</jta-data-source>
+    <class>com.jpa.model.Tseguser</class>
+    <class>com.jpa.model.Tseguserprofile</class>
     <class>com.jpa.model.Tsegmodule</class>
     <class>com.jpa.model.Tsegprofile</class>
     <class>com.jpa.model.Tsegprofiletransaction</class>
     <class>com.jpa.model.Tsegtransaction</class>
-    <class>com.jpa.model.Tseguser</class>
-    <class>com.jpa.model.Tseguserprofile</class>
+    <class>com.jpa.model.Tsegcatalogue</class>
+    <class>com.jpa.model.Tsegcataloguedetail</class>
+    <class>com.jpa.model.Tsegparameter</class>
     
      <properties>
       <property name="hibernate.show_sql" value="false"/>
