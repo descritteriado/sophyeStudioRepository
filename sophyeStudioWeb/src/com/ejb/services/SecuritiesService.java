@@ -8,18 +8,22 @@ import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 
 import com.dao.ModuleDao;
+import com.dao.ParameterDao;
 import com.dao.ProfileDao;
+import com.dao.ProfileTransactionDao;
 import com.dao.TransactionDao;
 import com.dao.UserDao;
 import com.dao.UserProfileDao;
 import com.jpa.model.Tsegmodule;
+import com.jpa.model.Tsegparameter;
 import com.jpa.model.Tsegprofile;
+import com.jpa.model.Tsegprofiletransaction;
 import com.jpa.model.Tsegtransaction;
 import com.jpa.model.Tseguser;
 import com.jpa.model.Tseguserprofile;
 
 @Stateless
-public class SecuritiesService  {
+public class SecuritiesService {
 
 	final static Logger logger = Logger.getLogger(SecuritiesService.class);
 
@@ -28,15 +32,21 @@ public class SecuritiesService  {
 
 	@EJB
 	ProfileDao<Tsegprofile> profileDao;
-	
+
 	@EJB
 	ModuleDao<Tsegmodule> moduleDao;
-	
+
 	@EJB
 	TransactionDao<Tsegtransaction> transactionDao;
-	
+
 	@EJB
 	UserProfileDao<Tseguserprofile> userProfileDao;
+
+	@EJB
+	ProfileTransactionDao<Tsegprofiletransaction> profileTransactionDao;
+
+	@EJB
+	ParameterDao<Tsegparameter> parameterDao;
 
 	/**
 	 * Metodo que obtiene el Menu
@@ -100,7 +110,7 @@ public class SecuritiesService  {
 
 		return profiles;
 	}
-	
+
 	/**
 	 * Metodo para consultar los modulos dados ciertos parametros
 	 * 
@@ -115,7 +125,7 @@ public class SecuritiesService  {
 
 		return modules;
 	}
-	
+
 	/**
 	 * Metodo para consultar las transacciones dados ciertos parametros
 	 * 
@@ -134,23 +144,59 @@ public class SecuritiesService  {
 	/**
 	 * Metodo para consultar la data dados ciertos parametros
 	 * 
-	 * @param username
-	 * @param profilename
+	 * @param userId
+	 * @param profileId
 	 * @return List<Tseguserprofile>
 	 */
-	public List<Tseguserprofile> getUsersProfiles(String username, String profilename) throws Exception {
+	public List<Tseguserprofile> getUsersProfiles(Integer userId, Integer profileId) throws Exception {
 
 		List<Tseguserprofile> userProfile = null;
 
-		userProfile = userProfileDao.getUsersProfiles(username, profilename);
+		userProfile = userProfileDao.getUsersProfiles(userId, profileId);
 
 		return userProfile;
 	}
 
 	/**
+	 * Metodo para consultar la data dados ciertos parametros
+	 * 
+	 * @param profileId
+	 * @param transactionId
+	 * @return List<Tsegprofiletransaction>
+	 */
+	public List<Tsegprofiletransaction> getProfilesTransactions(Integer profileId, Integer transactionId)
+			throws Exception {
+
+		List<Tsegprofiletransaction> profileTransactions = null;
+
+		profileTransactions = profileTransactionDao.getProfilesTransactions(profileId, transactionId);
+
+		return profileTransactions;
+	}
+	
+	
+	/**
+	 * Metodo para consultar los parametros
+	 * 
+	 * @param parameterName
+	 * * @param parameterDescription
+	 * @return Lista de parametros List<Tsegparameter>
+	 */
+	public List<Tsegparameter> getParameters(String parameterName, String parameterDescription) throws Exception {
+
+		List<Tsegparameter> parameters = null;
+
+		parameters = parameterDao.getParameters(parameterName, parameterDescription);
+
+		return parameters;
+	}
+
+	/**
 	 * Metodo para guardar o actualizar un Usuario
-	 * @param Tseguser user
-	 * @return boolean 
+	 * 
+	 * @param Tseguser
+	 *            user
+	 * @return boolean
 	 */
 	public boolean mergeUser(Tseguser user) {
 
@@ -159,8 +205,10 @@ public class SecuritiesService  {
 
 	/**
 	 * Metodo para guardar o actualizar un Perfil
-	 * @param Tsegprofile profile
-	 * @return boolean 
+	 * 
+	 * @param Tsegprofile
+	 *            profile
+	 * @return boolean
 	 */
 	public boolean mergeProfile(Tsegprofile profile) {
 
@@ -168,19 +216,23 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar un peril 
-	 * @param Tsegprofile profile
+	 * Metodo para eliminar un peril
+	 * 
+	 * @param Tsegprofile
+	 *            profile
 	 * @return boolean
 	 */
 	public boolean deleteProfile(Tsegprofile profile) {
 
 		return profileDao.remove(profile);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar un Modulo
-	 * @param Tsegmodule module
-	 * @return boolean 
+	 * 
+	 * @param Tsegmodule
+	 *            module
+	 * @return boolean
 	 */
 	public boolean mergeModule(Tsegmodule module) {
 
@@ -188,19 +240,23 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar un modulo 
-	 * @param Tsegmodule module
+	 * Metodo para eliminar un modulo
+	 * 
+	 * @param Tsegmodule
+	 *            module
 	 * @return boolean
 	 */
 	public boolean deleteModule(Tsegmodule module) {
 
 		return moduleDao.remove(module);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar una Transacion
-	 * @param Tsegtransaction transaction
-	 * @return boolean 
+	 * 
+	 * @param Tsegtransaction
+	 *            transaction
+	 * @return boolean
 	 */
 	public boolean mergeTransaction(Tsegtransaction transaction) {
 
@@ -208,19 +264,23 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar una Transaccion 
-	 * @param Tsegtransaction transaction
+	 * Metodo para eliminar una Transaccion
+	 * 
+	 * @param Tsegtransaction
+	 *            transaction
 	 * @return boolean
 	 */
 	public boolean deleteTransaction(Tsegtransaction transaction) {
 
 		return transactionDao.remove(transaction);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar Tseguserprofile
-	 * @param Tseguserprofile userPofile
-	 * @return boolean 
+	 * 
+	 * @param Tseguserprofile
+	 *            userPofile
+	 * @return boolean
 	 */
 	public boolean mergeUsersProfiles(Tseguserprofile userPofile) {
 
@@ -229,12 +289,63 @@ public class SecuritiesService  {
 
 	/**
 	 * Metodo para eliminar Tseguserprofile
-	 * @param Tseguserprofile userPofile
+	 * 
+	 * @param Tseguserprofile
+	 *            userPofile
 	 * @return boolean
 	 */
 	public boolean deleteUsersProfiles(Tseguserprofile userPofile) {
 
 		return userProfileDao.remove(userPofile);
 	}
+
+	/**
+	 * Metodo para guardar o actualizar Tsegprofiletransaction
+	 * 
+	 * @param Tsegprofiletransaction
+	 *            profileTransaction
+	 * @return boolean
+	 */
+	public boolean mergeProfilesTransactions(Tsegprofiletransaction profileTransaction) {
+
+		return profileTransactionDao.merge(profileTransaction);
+	}
+
+	/**
+	 * Metodo para eliminar Tsegprofiletransaction
+	 * 
+	 * @param Tsegprofiletransaction
+	 *            profileTransaction
+	 * @return boolean
+	 */
+	public boolean deleteProfilesTransactions(Tsegprofiletransaction profileTransaction) {
+
+		return profileTransactionDao.remove(profileTransaction);
+	}
+	
+	/**
+	 * Metodo para guardar o actualizar un Parametro
+	 * 
+	 * @param Tsegparameter
+	 *            parameter
+	 * @return boolean
+	 */
+	public boolean mergeParameter(Tsegparameter parameter) {
+
+		return parameterDao.merge(parameter);
+	}
+
+	/**
+	 * Metodo para eliminar un parametro
+	 * 
+	 * @param Tsegparameter
+	 *            parameter
+	 * @return boolean
+	 */
+	public boolean deleteParameter(Tsegparameter parameter) {
+
+		return parameterDao.remove(parameter);
+	}
+
 
 }
