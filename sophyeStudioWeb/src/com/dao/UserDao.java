@@ -64,9 +64,16 @@ public class UserDao<Entity> extends GenericDaoImpl<Entity> {
 		List<Tseguser> users = null;
 		String preQuery = "SELECT u FROM Tseguser as u " + "WHERE u.deleted= false and u.status= :status ";
 
-		preQuery = preQuery.concat(!username.isEmpty() ? "and  u.username like :userName"
-				: !name.isEmpty() ? "and  u.names like :name"
-						: !lastName.isEmpty() ? "and u.lastnames like :lastName" : "");
+		if (!username.isEmpty()) {
+
+			preQuery = preQuery.concat("and  u.username like :userName ");
+		}
+		if (!name.isEmpty()) {
+			preQuery = preQuery.concat("and  u.names like :name ");
+		}
+		if (!lastName.isEmpty()) {
+			preQuery = preQuery.concat("and u.lastnames like :lastName ");
+		}
 
 		Query query = entityManager.createQuery(preQuery);
 		query.setParameter("status", status);
