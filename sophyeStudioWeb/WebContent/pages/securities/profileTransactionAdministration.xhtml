@@ -1,0 +1,186 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+		<ui:include
+			src="/pages/securities/profileTransactionAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmProfileTransactionAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración Usuario Perfil"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelProfileTransactionSearch" footer=""
+				header="Filtros de B&#250;squeda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+				
+				<p:outputLabel for="IdProfile" value="Perfil:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="IdProfile"
+						value="#{profileTransactionAdministrationController.profileId}"
+						style="font-size: 12px; width:300px; padding:2px"
+						rendered="#{profileTransactionAdministrationController.edition}">
+						<f:selectItem itemLabel="Seleccione" itemValue="" />
+						<f:selectItems
+							value="#{profileTransactionAdministrationController.profiles}"
+							var="profile" itemValue="#{profile.id}"
+							itemLabel="#{profile.description}" />
+					</h:selectOneMenu>
+
+					<p:outputLabel for="IdTransaction" value="Transacci&#243;n:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="IdTransaction"
+						value="#{profileTransactionAdministrationController.transactionId}"
+						style="font-size: 12px; width:300px;"
+						rendered="#{profileTransactionAdministrationController.edition}">
+						<f:selectItem itemLabel="Seleccione" itemValue="" />
+						<f:selectItems
+							value="#{profileTransactionAdministrationController.transactions}" var="transaction"
+							itemValue="#{transaction.id}" itemLabel="#{transaction.description}" />
+					</h:selectOneMenu>
+
+					
+
+
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction"
+						actionListener="#{profileTransactionAdministrationController.newProfileTransaction}"
+						onclick="PF('dlgNewProfileTransaction').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{profileTransactionAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{profileTransactionAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarProfileTransactions" value="Buscar"
+						update="tableProfileTransactionResult"
+						process="@this panelProfileTransactionSearch"
+						actionListener="#{profileTransactionAdministrationController.consultProfileTransaction('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelProfileTransactionResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableProfileTransactionResult" var="profileTransaction"
+					paginatorPosition="bottom" widgetVar="tableProfileTransactionResult"
+					value="#{profileTransactionAdministrationController.profilesTransactions}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Id" width="10px;" style="font-size: 12px;">
+						<h:outputText value="#{profileTransaction.id}" style="font-size: 11px;" />
+					</p:column>
+					<p:column headerText="Perfil" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{profileTransaction.tsegprofile.description}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Transacci&#243;n" width="150px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{profileTransaction.tsegtransaction.description}"
+							style="font-size: 11px;" />
+					</p:column>
+					<p:column style="width:28px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction"
+							process="tableProfileTransactionResult" title="Ver"
+							oncomplete="PF('dlgNewProfileTransaction').show()">
+							<f:setPropertyActionListener value="#{profileTransaction}"
+								target="#{profileTransactionAdministrationController.perfilTransaction}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{profileTransactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{profileTransactionAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:28px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction"
+							process="tableProfileTransactionResult :frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction"
+							title="Editar" oncomplete="PF('dlgNewProfileTransaction').show()">
+							<f:setPropertyActionListener value="#{profileTransaction}"
+								target="#{profileTransactionAdministrationController.perfilTransaction}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{profileTransactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{profileTransactionAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus"
+							process="tableProfileTransactionResult" title="Eliminar"
+							oncomplete="PF('dlgDeleteProfileTransaction').show()">
+							<f:setPropertyActionListener value="#{profileTransaction}"
+								target="#{profileTransactionAdministrationController.perfilTransaction}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{profileTransactionAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{profileTransactionAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewProfileTransactionRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewProfileTransaction').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewProfileTransaction').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteProfileTransactionRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteProfileTransaction').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteProfileTransaction').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

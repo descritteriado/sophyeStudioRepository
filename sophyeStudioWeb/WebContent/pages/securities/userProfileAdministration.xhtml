@@ -1,0 +1,184 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+		<ui:include
+			src="/pages/securities/userProfileAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmUserProfileAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración Usuario Perfil"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelUserProfileSearch" footer=""
+				header="Filtros de B&#250;squeda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+
+					<p:outputLabel for="IdUser" value="Usuario:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="IdUser"
+						value="#{userProfileAdministrationController.userId}"
+						style="font-size: 12px; width:300px;"
+						rendered="#{userProfileAdministrationController.edition}">
+						<f:selectItem itemLabel="Seleccione" itemValue="" />
+						<f:selectItems
+							value="#{userProfileAdministrationController.users}" var="user"
+							itemValue="#{user.id}" itemLabel="#{user.username}" />
+					</h:selectOneMenu>
+
+					<p:outputLabel for="IdProfile" value="Perfil:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="IdProfile"
+						value="#{userProfileAdministrationController.profileId}"
+						style="font-size: 12px; width:300px;"
+						rendered="#{userProfileAdministrationController.edition}">
+						<f:selectItem itemLabel="Seleccione" itemValue="" />
+						<f:selectItems
+							value="#{userProfileAdministrationController.profiles}"
+							var="profile" itemValue="#{profile.id}"
+							itemLabel="#{profile.description}" />
+					</h:selectOneMenu>
+
+
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewUserProfile:gridNewUserProfile"
+						actionListener="#{userProfileAdministrationController.newUserProfile}"
+						onclick="PF('dlgNewUserProfile').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{userProfileAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{userProfileAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarUserProfiles" value="Buscar"
+						update="tableUserProfileResult"
+						process="@this panelUserProfileSearch"
+						actionListener="#{userProfileAdministrationController.consultUserProfile('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelUserProfileResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableUserProfileResult" var="userProfile"
+					paginatorPosition="bottom" widgetVar="tableUserProfileResult"
+					value="#{userProfileAdministrationController.usersProfiles}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Id" width="10px;" style="font-size: 12px;">
+						<h:outputText value="#{userProfile.id}" style="font-size: 11px;" />
+					</p:column>
+					<p:column headerText="Usuario" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{userProfile.tseguser.username}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Perfil" width="150px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{userProfile.tsegprofile.description}"
+							style="font-size: 11px;" />
+					</p:column>
+					<p:column style="width:28px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewUserProfile:gridNewUserProfile"
+							process="tableUserProfileResult" title="Ver"
+							oncomplete="PF('dlgNewUserProfile').show()">
+							<f:setPropertyActionListener value="#{userProfile}"
+								target="#{userProfileAdministrationController.usuarioPerfil}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{userProfileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{userProfileAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:28px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewUserProfile:gridNewUserProfile"
+							process="tableUserProfileResult :frmConSesion:frmDlgNewUserProfile:gridNewUserProfile"
+							title="Editar" oncomplete="PF('dlgNewUserProfile').show()">
+							<f:setPropertyActionListener value="#{userProfile}"
+								target="#{userProfileAdministrationController.usuarioPerfil}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{userProfileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{userProfileAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus"
+							process="tableUserProfileResult" title="Eliminar"
+							oncomplete="PF('dlgDeleteUserProfile').show()">
+							<f:setPropertyActionListener value="#{userProfile}"
+								target="#{userProfileAdministrationController.usuarioPerfil}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{userProfileAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{userProfileAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewUserProfileRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewUserProfile').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewUserProfile').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteUserProfileRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteUserProfile').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteUserProfile').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>
