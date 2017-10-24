@@ -22,6 +22,8 @@ public class Tsegtransaction implements Serializable {
 
 	private String description;
 
+	private Integer orderval;
+
 	private String url;
 
 	//bi-directional many-to-one association to Tsegprofiletransaction
@@ -58,6 +60,14 @@ public class Tsegtransaction implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getOrderval() {
+		return this.orderval;
+	}
+
+	public void setOrderval(Integer orderval) {
+		this.orderval = orderval;
 	}
 
 	public String getUrl() {

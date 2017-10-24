@@ -26,10 +26,6 @@ public class Tsegprofile implements Serializable {
 	@OneToMany(mappedBy="tsegprofile")
 	private List<Tsegprofiletransaction> tsegprofiletransactions;
 
-	//bi-directional many-to-one association to Tseguserprofile
-	@OneToMany(mappedBy="tsegprofile")
-	private List<Tseguserprofile> tseguserprofiles;
-
 	public Tsegprofile() {
 	}
 
@@ -77,28 +73,6 @@ public class Tsegprofile implements Serializable {
 		tsegprofiletransaction.setTsegprofile(null);
 
 		return tsegprofiletransaction;
-	}
-
-	public List<Tseguserprofile> getTseguserprofiles() {
-		return this.tseguserprofiles;
-	}
-
-	public void setTseguserprofiles(List<Tseguserprofile> tseguserprofiles) {
-		this.tseguserprofiles = tseguserprofiles;
-	}
-
-	public Tseguserprofile addTseguserprofile(Tseguserprofile tseguserprofile) {
-		getTseguserprofiles().add(tseguserprofile);
-		tseguserprofile.setTsegprofile(this);
-
-		return tseguserprofile;
-	}
-
-	public Tseguserprofile removeTseguserprofile(Tseguserprofile tseguserprofile) {
-		getTseguserprofiles().remove(tseguserprofile);
-		tseguserprofile.setTsegprofile(null);
-
-		return tseguserprofile;
 	}
 
 }
