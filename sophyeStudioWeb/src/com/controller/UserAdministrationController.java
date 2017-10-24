@@ -37,11 +37,13 @@ public class UserAdministrationController {
 	@PostConstruct
 	public void init() {
 		usuario = new Tseguser();
+		usuario.setKeyInCourse("");
 		edition = true;
 	}
 
 	public void newUser() {
 		usuario = new Tseguser();
+		usuario.setKeyInCourse("");
 		usuario.setIstemporal(false);
 		usuario.setStatus(false);
 		usuario.setDeleted(false);
