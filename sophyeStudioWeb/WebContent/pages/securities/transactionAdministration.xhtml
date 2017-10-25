@@ -109,8 +109,8 @@
 					<p:column style="width:40px;text-align: center"
 						headerText="Eliminar">
 
-						<p:commandButton icon="ui-icon-minus" process="tableTransactionResult"
-							title="Eliminar"
+						<p:commandButton icon="ui-icon-minus" process="tableTransactionResult :frmConSesion:frmDlgDeleteTransaction:gridDeleteTransaction"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteTransaction:gridDeleteTransaction"
 							oncomplete="PF('dlgDeleteTransaction').show()">
 							<f:setPropertyActionListener value="#{transaction}"
 								target="#{transactionAdministrationController.transaction}" />

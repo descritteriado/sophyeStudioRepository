@@ -137,7 +137,8 @@
 						headerText="Eliminar">
 
 						<p:commandButton icon="ui-icon-minus"
-							process="tableProfileTransactionResult" title="Eliminar"
+							process="tableProfileTransactionResult :frmConSesion:frmDlgDeleteProfileTransaction:gridDeleteProfileTransaction" title="Eliminar"
+							update=":frmConSesion:frmDlgDeleteProfileTransaction:gridDeleteProfileTransaction"
 							oncomplete="PF('dlgDeleteProfileTransaction').show()">
 							<f:setPropertyActionListener value="#{profileTransaction}"
 								target="#{profileTransactionAdministrationController.perfilTransaction}" />

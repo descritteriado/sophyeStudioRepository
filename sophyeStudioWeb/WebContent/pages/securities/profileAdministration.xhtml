@@ -102,7 +102,7 @@
 						headerText="Eliminar">
 
 						<p:commandButton icon="ui-icon-minus" process="tableProfileResult"
-							title="Eliminar"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteProfile:gridDeleteProfile"
 							oncomplete="PF('dlgDeleteProfile').show()">
 							<f:setPropertyActionListener value="#{profile}"
 								target="#{profileAdministrationController.perfil}" />

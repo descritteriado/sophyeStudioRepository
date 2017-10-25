@@ -133,8 +133,8 @@
 					<p:column style="width:32px;text-align: center"
 						headerText="Eliminar">
 
-						<p:commandButton icon="ui-icon-minus" process="tableUserResult"
-							title="Eliminar"
+						<p:commandButton icon="ui-icon-minus" process="tableUserResult :frmConSesion:frmDlgDeleteUser:gridDeleteUser"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteUser:gridDeleteUser"
 							oncomplete="PF('dlgDeleteUser').show()">
 							<f:setPropertyActionListener value="#{user}"
 								target="#{userAdministrationController.usuario}" />

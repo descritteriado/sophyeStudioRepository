@@ -8,30 +8,33 @@
 <p:dialog id="dlgDeleteUserProfile" modal="true"
 	widgetVar="dlgDeleteUserProfile" closable="false" resizable="false"
 	header="Eliminar Registro" style="font-size:xx-medium ;">
-	<h:panelGrid id="gridDeleteUserProfile" columns="1">
+	<h:form id="frmDlgDeleteProfile">
+		<h:panelGrid id="gridDeleteUserProfile" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteUserProfile :frmConSesion:frmUserProfileAdministration:panelUserProfileResult"
+						actionListener="#{userProfileAdministrationController.deleteUserProfile}"
+						oncomplete="handleDeleteUserProfileRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteUserProfile').hide();" process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
 
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel value="Desea eliminar el registro seleccionado?"
-			style="font-size: 13px;" />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:separator />
-		<div align="center">
-			<h:panelGrid columns="2">
-				<p:commandButton value="Aceptar"
-					update="gridDeleteUserProfile :frmConSesion:frmUserProfileAdministration:panelUserProfileResult"
-					actionListener="#{userProfileAdministrationController.deleteUserProfile}"
-					oncomplete="handleDeleteUserProfileRequest(xhr, status, args)" />
-				<p:commandButton value="Cancelar"
-					onclick="PF('dlgDeleteUserProfile').hide();" process="@this" />
-			</h:panelGrid>
-		</div>
-		<p:separator />
-
-	</h:panelGrid>
+		</h:panelGrid>
+	</h:form>
 </p:dialog>
 
 <p:dialog id="dlgNewUserProfile" modal="true"

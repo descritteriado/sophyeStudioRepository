@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="dlgDeleteCatalogue" modal="true"
+	widgetVar="dlgDeleteCatalogue" closable="false" resizable="false"
+	header="Eliminar catalogo" style="font-size:xx-medium ;">
+	<h:form id="frmDlgDeleteCatalogue">
+		<h:panelGrid id="gridDeleteCatalogue" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteCatalogue :frmConSesion:frmCatalogueAdministration:panelCatalogueResult"
+						actionListener="#{catalogueAdministrationController.deleteCatalogue}"
+						oncomplete="handleDeleteCatalogueRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteCatalogue').hide();" process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
+
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+<p:dialog id="dlgNewCatalogue" modal="true" widgetVar="dlgNewCatalogue"
+	closable="true" resizable="false" header="Cat&#225;logo"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgNewCatalogue">
+
+		<h:panelGrid id="gridNewCatalogue" columns="1">
+			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
+				closable="true" />
+
+			<h:panelGrid id="gridNewCatalogue1" columns="2" cellpadding="4">
+
+				<p:outputLabel for="editId" value="Id:" style="font-size: 12px;" />
+				<p:outputLabel id="editId"
+					value="#{catalogueAdministrationController.catalogo.id}"
+					style="font-size: 12px; width:300px;" />
+
+				<p:outputLabel for="editName" value="Nombre:"
+					style="font-size: 12px;" />
+				<p:inputText id="editName" required="true"
+					value="#{catalogueAdministrationController.catalogo.name}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{catalogueAdministrationController.edition}" />
+				<p:outputLabel id="viewName"
+					value="#{catalogueAdministrationController.catalogo.name}"
+					style="font-size: 12px;"
+					rendered="#{!catalogueAdministrationController.edition}" />
+
+				<p:outputLabel for="editDescription" value="Descripci&#243;n:"
+					style="font-size: 12px;" />
+				<p:inputText id="editDescription" required="true"
+					value="#{catalogueAdministrationController.catalogo.description}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{catalogueAdministrationController.edition}" />
+				<p:outputLabel id="viewDescription"
+					value="#{catalogueAdministrationController.catalogo.description}"
+					style="font-size: 12px;"
+					rendered="#{!catalogueAdministrationController.edition}" />
+
+				<p:outputLabel for="editValue" value="Valor:"
+					style="font-size: 12px;" />
+				<p:inputText id="editValue" required="false"
+					value="#{catalogueAdministrationController.catalogo.value}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{catalogueAdministrationController.edition}" />
+				<p:outputLabel id="viewValue"
+					value="#{catalogueAdministrationController.catalogo.value}"
+					style="font-size: 12px;"
+					rendered="#{!catalogueAdministrationController.edition}" />
+			</h:panelGrid>
+			<p:separator />
+			<h:panelGrid columns="2" cellpadding="4">
+				<p:commandButton value="Guardar" id="btnGuardar"
+					update=":frmConSesion:frmDlgNewCatalogue:gridNewCatalogue :frmConSesion:frmCatalogueAdministration:panelCatalogueResult"
+					process=":frmConSesion:frmDlgNewCatalogue:gridNewCatalogue @this"
+					actionListener="#{catalogueAdministrationController.processCatalogue}"
+					oncomplete="handleNewCatalogueRequest(xhr, status, args)"
+					rendered="#{catalogueAdministrationController.edition}" />
+				<p:commandButton value="Aceptar"
+					onclick="PF('dlgNewCatalogue').hide();" process="@this"
+					rendered="#{!catalogueAdministrationController.edition}" />
+				<p:commandButton value="Cancelar"
+					onclick="PF('dlgNewCatalogue').hide();" process="@this" />
+			</h:panelGrid>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+
+
+<p:dialog id="dlgProcessCatalogueAdmin" modal="true"
+	widgetVar="statusDialog" draggable="false" closable="false"
+	resizable="false" header="Procesando..." style="font-size:xx-small;">
+	<p:graphicImage library="images" name="ajax-loader.gif" />
+</p:dialog>
+</html>

@@ -8,30 +8,32 @@
 <p:dialog id="dlgDeleteModule" modal="true" widgetVar="dlgDeleteModule"
 	closable="false" resizable="false" header="Eliminar M&#243;dulo"
 	style="font-size:xx-medium ;">
-	<h:panelGrid id="gridDeleteModule" columns="1">
-
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel value="Desea eliminar el registro seleccionado?"
-			style="font-size: 13px;" />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:outputLabel />
-		<p:separator />
-		<div align="center">
-			<h:panelGrid columns="2">
-				<p:commandButton value="Aceptar"
-					update="gridDeleteModule :frmConSesion:frmModuleAdministration:panelModuleResult"
-					actionListener="#{moduleAdministrationController.deleteModule}"
-					oncomplete="handleDeleteModuleRequest(xhr, status, args)" />
-				<p:commandButton value="Cancelar"
-					onclick="PF('dlgDeleteModule').hide();" process="@this" />
-			</h:panelGrid>
-		</div>
-		<p:separator />
-
-	</h:panelGrid>
+	<h:form id="frmDlgDeleteModule">
+		<h:panelGrid id="gridDeleteModule" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteModule :frmConSesion:frmModuleAdministration:panelModuleResult"
+						actionListener="#{moduleAdministrationController.deleteModule}"
+						oncomplete="handleDeleteModuleRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteModule').hide();" process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
 </p:dialog>
 
 <p:dialog id="dlgNewModule" modal="true" widgetVar="dlgNewModule"

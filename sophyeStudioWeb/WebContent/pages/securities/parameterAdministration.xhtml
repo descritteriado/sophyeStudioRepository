@@ -68,10 +68,6 @@
 					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
 					emptyMessage="No existen Registros">
 
-					<p:column headerText="Id" width="20px;" style="font-size: 12px;">
-						<h:outputText value="#{parameter.id}" style="font-size: 11px;" />
-					</p:column>
-
 					<p:column headerText="Nombre" width="38px;"
 						style="font-size: 12px;">
 						<h:outputText value="#{parameter.name}" style="font-size: 11px;" />
@@ -118,7 +114,8 @@
 						headerText="Eliminar">
 
 						<p:commandButton icon="ui-icon-minus"
-							process="tableParameterResult" title="Eliminar"
+							process="tableParameterResult :frmConSesion:frmDlgDeleteParameter:gridDeleteParameter" title="Eliminar"
+							update=":frmConSesion:frmDlgDeleteParameter:gridDeleteParameter"
 							oncomplete="PF('dlgDeleteParameter').show()">
 							<f:setPropertyActionListener value="#{parameter}"
 								target="#{parameterAdministrationController.parametro}" />
