@@ -7,13 +7,17 @@ import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
 
-import com.dao.ModuleDao;
-import com.dao.ParameterDao;
-import com.dao.ProfileDao;
-import com.dao.ProfileTransactionDao;
-import com.dao.TransactionDao;
-import com.dao.UserDao;
-import com.dao.UserProfileDao;
+import com.dao.securities.CatalogueDao;
+import com.dao.securities.CatalogueDetailDao;
+import com.dao.securities.ModuleDao;
+import com.dao.securities.ParameterDao;
+import com.dao.securities.ProfileDao;
+import com.dao.securities.ProfileTransactionDao;
+import com.dao.securities.TransactionDao;
+import com.dao.securities.UserDao;
+import com.dao.securities.UserProfileDao;
+import com.jpa.model.Tsegcatalogue;
+import com.jpa.model.Tsegcataloguedetail;
 import com.jpa.model.Tsegmodule;
 import com.jpa.model.Tsegparameter;
 import com.jpa.model.Tsegprofile;
@@ -47,6 +51,12 @@ public class SecuritiesService {
 
 	@EJB
 	ParameterDao<Tsegparameter> parameterDao;
+
+	@EJB
+	CatalogueDao<Tsegcatalogue> catalogueDao;
+
+	@EJB
+	CatalogueDetailDao<Tsegcataloguedetail> catalogueDetailDao;
 
 	/**
 	 * Metodo que obtiene el Menu
@@ -173,13 +183,12 @@ public class SecuritiesService {
 
 		return profileTransactions;
 	}
-	
-	
+
 	/**
 	 * Metodo para consultar los parametros
 	 * 
 	 * @param parameterName
-	 * * @param parameterDescription
+	 *            * @param parameterDescription
 	 * @return Lista de parametros List<Tsegparameter>
 	 */
 	public List<Tsegparameter> getParameters(String parameterName, String parameterDescription) throws Exception {
@@ -189,6 +198,39 @@ public class SecuritiesService {
 		parameters = parameterDao.getParameters(parameterName, parameterDescription);
 
 		return parameters;
+	}
+
+	/**
+	 * Metodo para consultar los catalogos
+	 * 
+	 * @param catalogueName
+	 *            * @param catalogueDescription
+	 * @return Lista de catalogos List<Tsegcatalogue>
+	 */
+	public List<Tsegcatalogue> getCatalogues(String catalogueName, String catalogueDescription) throws Exception {
+
+		List<Tsegcatalogue> catalogues = null;
+
+		catalogues = catalogueDao.getCatalogues(catalogueName, catalogueDescription);
+
+		return catalogues;
+	}
+
+	/**
+	 * Metodo para consultar los catalogos detalle
+	 * 
+	 * @param catalogueName
+	 *            * @param catalogueDescription
+	 * @return Lista de catalogos List<Tsegcatalogue>
+	 */
+	public List<Tsegcataloguedetail> getCataloguesDetail(Integer catalogueId, String catalogueDesc, String itemName)
+			throws Exception {
+
+		List<Tsegcataloguedetail> cataloguesDetail = null;
+
+		cataloguesDetail = catalogueDetailDao.getCataloguesDetail(catalogueId, catalogueDesc, itemName);
+
+		return cataloguesDetail;
 	}
 
 	/**
@@ -220,11 +262,10 @@ public class SecuritiesService {
 	 * 
 	 * @param Tsegprofile
 	 *            profile
-	 * @return boolean
 	 */
-	public boolean deleteProfile(Tsegprofile profile) {
+	public void deleteProfile(Tsegprofile profile) throws Exception {
 
-		return profileDao.remove(profile);
+		profileDao.remove(profile);
 	}
 
 	/**
@@ -244,11 +285,10 @@ public class SecuritiesService {
 	 * 
 	 * @param Tsegmodule
 	 *            module
-	 * @return boolean
 	 */
-	public boolean deleteModule(Tsegmodule module) {
+	public void deleteModule(Tsegmodule module)  throws Exception{
 
-		return moduleDao.remove(module);
+		moduleDao.remove(module);
 	}
 
 	/**
@@ -268,11 +308,10 @@ public class SecuritiesService {
 	 * 
 	 * @param Tsegtransaction
 	 *            transaction
-	 * @return boolean
 	 */
-	public boolean deleteTransaction(Tsegtransaction transaction) {
+	public void deleteTransaction(Tsegtransaction transaction)  throws Exception {
 
-		return transactionDao.remove(transaction);
+		transactionDao.remove(transaction);
 	}
 
 	/**
@@ -292,11 +331,10 @@ public class SecuritiesService {
 	 * 
 	 * @param Tseguserprofile
 	 *            userPofile
-	 * @return boolean
 	 */
-	public boolean deleteUsersProfiles(Tseguserprofile userPofile) {
+	public void deleteUsersProfiles(Tseguserprofile userPofile)  throws Exception {
 
-		return userProfileDao.remove(userPofile);
+		userProfileDao.remove(userPofile);
 	}
 
 	/**
@@ -316,19 +354,17 @@ public class SecuritiesService {
 	 * 
 	 * @param Tsegprofiletransaction
 	 *            profileTransaction
-	 * @return boolean
 	 */
-	public boolean deleteProfilesTransactions(Tsegprofiletransaction profileTransaction) {
+	public void deleteProfilesTransactions(Tsegprofiletransaction profileTransaction)  throws Exception {
 
-		return profileTransactionDao.remove(profileTransaction);
+		profileTransactionDao.remove(profileTransaction);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar un Parametro
 	 * 
 	 * @param Tsegparameter
 	 *            parameter
-	 * @return boolean
 	 */
 	public boolean mergeParameter(Tsegparameter parameter) {
 
@@ -340,12 +376,56 @@ public class SecuritiesService {
 	 * 
 	 * @param Tsegparameter
 	 *            parameter
-	 * @return boolean
 	 */
-	public boolean deleteParameter(Tsegparameter parameter) {
+	public void deleteParameter(Tsegparameter parameter) throws Exception {
 
-		return parameterDao.remove(parameter);
+		parameterDao.remove(parameter);
 	}
 
+	/**
+	 * Metodo para guardar o actualizar un Catalogo
+	 * 
+	 * @param Tsegcatalogue
+	 *            catalogue
+	 * @return boolean
+	 */
+	public boolean mergeCatalogue(Tsegcatalogue catalogue) {
+
+		return catalogueDao.merge(catalogue);
+	}
+
+	/**
+	 * Metodo para eliminar un catalogo
+	 * 
+	 * @param Tsegcatalogue
+	 *            catalogue
+	 */
+	public void deleteCatalogue(Tsegcatalogue catalogue) throws Exception {
+
+		catalogueDao.remove(catalogue);
+	}
+
+	/**
+	 * Metodo para guardar o actualizar un Detalle Catalogo
+	 * 
+	 * @param Tsegcataloguedetail
+	 *            catalogueDetail
+	 * @return boolean
+	 */
+	public boolean mergeCatalogueDetail(Tsegcataloguedetail catalogueDetail) {
+
+		return catalogueDetailDao.merge(catalogueDetail);
+	}
+
+	/**
+	 * Metodo para eliminar un detalle catalogo
+	 * 
+	 * @param Tsegcataloguedetail
+	 *            catalogueDetail
+	 */
+	public void deleteCatalogueDetail(Tsegcataloguedetail catalogueDetail) throws Exception {
+
+		 catalogueDetailDao.remove(catalogueDetail);
+	}
 
 }
