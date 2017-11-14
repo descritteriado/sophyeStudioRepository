@@ -101,8 +101,8 @@
 					<p:column style="width:32px;text-align: center"
 						headerText="Eliminar">
 
-						<p:commandButton icon="ui-icon-minus" process="tableModuleResult"
-							title="Eliminar"
+						<p:commandButton icon="ui-icon-minus" process="tableModuleResult :frmConSesion:frmDlgDeleteModule:gridDeleteModule"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteModule:gridDeleteModule"
 							oncomplete="PF('dlgDeleteModule').show()">
 							<f:setPropertyActionListener value="#{module}"
 								target="#{moduleAdministrationController.modulo}" />

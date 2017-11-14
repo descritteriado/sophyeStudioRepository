@@ -1,0 +1,91 @@
+<ui:composition template="/templates/conSesionReport.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmClientsByCityReport">
+
+			<p:separator />
+			<p:outputLabel value="Reporte Clientes por Ciudad"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelParameterSearch" footer="" header="Par&#225;metros"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<h:panelGrid id="gridParameters" columns="2" cellpadding="2">
+					<p:outputLabel for="editProvince" value="Provincia:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="editProvince" required="true"
+						value="#{clientsByCityReportController.provinceId}"
+						style="font-size: 12px; width:300px;">
+						<f:selectItems value="#{clientsByCityReportController.provinces}"
+							var="province" itemValue="#{province.id}"
+							itemLabel="#{province.name}" />
+						<f:ajax event="change" execute="editProvince @this"
+							render="editCanton editParroquia"
+							listener="#{clientsByCityReportController.consultCantones}" />
+					</h:selectOneMenu>
+
+					<p:outputLabel for="editCanton" value="Cant&#243;n:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="editCanton"
+						value="#{clientsByCityReportController.cantonId}"
+						style="font-size: 12px; width:300px;">
+						<f:selectItem itemValue="#{null}" itemLabel=""></f:selectItem>
+						<f:selectItems value="#{clientsByCityReportController.cantones}"
+							var="canton" itemValue="#{canton.id}" itemLabel="#{canton.name}" />
+						<f:ajax event="change" execute="@this" render="editParroquia"
+							listener="#{clientsByCityReportController.consultParroquias}" />
+					</h:selectOneMenu>
+
+					<p:outputLabel for="editParroquia" value="Parroquia:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="editParroquia"
+						value="#{clientsByCityReportController.parroquiaId}"
+						style="font-size: 12px; width:300px;">
+						<f:selectItem itemValue="#{null}" itemLabel=""></f:selectItem>
+						<f:selectItems value="#{clientsByCityReportController.parroquias}"
+							var="parroquia" itemValue="#{parroquia.id}"
+							itemLabel="#{parroquia.name}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelExportFormat" header="Formato de Exportaci&#243;n"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<h:panelGrid id="gridExportFormat" columns="2" cellpadding="2">
+					<p:selectOneRadio
+						value="#{clientsByCityReportController.exportOption}">
+						<f:selectItem itemValue="PDF_Preview" itemLabel="PDF Preview" />
+						<f:selectItem itemValue="PDF" itemLabel="PDF" />
+						<f:selectItem itemValue="EXCEL" itemLabel="EXCEL" />
+						<f:selectItem itemValue="DOCX" itemLabel="DOCX" />
+						<f:selectItem itemValue="ODT" itemLabel="ODT" />
+						<f:selectItem itemValue="PPT" itemLabel="PPT" />
+					</p:selectOneRadio>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<h:commandButton
+						action="#{clientsByCityReportController.generateReport}"
+						id="generateReport" value="Generar Reporte" />
+				</div>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

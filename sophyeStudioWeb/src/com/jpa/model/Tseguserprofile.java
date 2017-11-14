@@ -17,14 +17,16 @@ public class Tseguserprofile implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
+	private String coment;
+
 	//bi-directional many-to-one association to Tsegprofile
 	@ManyToOne
-	@JoinColumn(name="\"idProfiles\"")
+	@JoinColumn(name="idprofile")
 	private Tsegprofile tsegprofile;
 
 	//bi-directional many-to-one association to Tseguser
 	@ManyToOne
-	@JoinColumn(name="\"idUsers\"")
+	@JoinColumn(name="iduser")
 	private Tseguser tseguser;
 
 	public Tseguserprofile() {
@@ -36,6 +38,14 @@ public class Tseguserprofile implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getComent() {
+		return this.coment;
+	}
+
+	public void setComent(String coment) {
+		this.coment = coment;
 	}
 
 	public Tsegprofile getTsegprofile() {

@@ -64,12 +64,16 @@
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.id}" style="font-size: 11px;" />
 					</p:column>
-
+					<p:column headerText="M&#243;dulo" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{transaction.tsegmodule.description}" style="font-size: 11px;" />
+					</p:column>
+					
 					<p:column headerText="Descripci&#243;n" width="150px;"
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.description}" style="font-size: 11px;" />
 					</p:column>
-					<p:column headerText="Url" width="250px;"
+					<p:column headerText="Url" width="220px;"
 						style="font-size: 12px;">
 						<h:outputText value="#{transaction.url}" style="font-size: 11px;" />
 					</p:column>
@@ -105,8 +109,8 @@
 					<p:column style="width:40px;text-align: center"
 						headerText="Eliminar">
 
-						<p:commandButton icon="ui-icon-minus" process="tableTransactionResult"
-							title="Eliminar"
+						<p:commandButton icon="ui-icon-minus" process="tableTransactionResult :frmConSesion:frmDlgDeleteTransaction:gridDeleteTransaction"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteTransaction:gridDeleteTransaction"
 							oncomplete="PF('dlgDeleteTransaction').show()">
 							<f:setPropertyActionListener value="#{transaction}"
 								target="#{transactionAdministrationController.transaction}" />

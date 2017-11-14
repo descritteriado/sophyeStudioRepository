@@ -1,0 +1,181 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+		<ui:include
+			src="/pages/securities/catalogueDetailAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmCatalogueDetailAdministration">
+
+			<p:separator />
+			<p:outputLabel
+				value="Administraci&#243;n de Detalle de Cat&#225;logos"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelCatalogueDetailSearch" footer=""
+				header="Filtros de Búsqueda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+
+					<p:outputLabel for="IdCatalogue" value="Cat&#225;logo:"
+						style="font-size: 12px;" />
+
+					<h:selectOneMenu id="IdCatalogue"
+						value="#{catalogueDetailAdministrationController.catalogueId}"
+						style="font-size: 12px; width:300px; padding:2px"
+						rendered="#{catalogueDetailAdministrationController.edition}">
+						<f:selectItem itemLabel="Seleccione" itemValue="" />
+						<f:selectItems
+							value="#{catalogueDetailAdministrationController.catalogues}"
+							var="catalogue" itemValue="#{catalogue.id}"
+							itemLabel="#{catalogue.name}" />
+					</h:selectOneMenu>
+
+
+					<p:outputLabel for="name" value="Nombre:" style="font-size: 12px;" />
+					<p:inputText id="name"
+						value="#{catalogueDetailAdministrationController.catalogueDetailName}"
+						style="font-size: 12px;" />
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewCatalogueDetail:gridNewCatalogueDetail"
+						actionListener="#{catalogueDetailAdministrationController.newCatalogueDetail}"
+						onclick="PF('dlgNewCatalogueDetail').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{catalogueDetailAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{catalogueDetailAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarCatalogueDetails" value="Buscar"
+						update="tableCatalogueDetailResult"
+						process="@this panelCatalogueDetailSearch"
+						actionListener="#{catalogueDetailAdministrationController.consultCataloguesDetail('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelCatalogueDetailResult" footer=""
+				header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableCatalogueDetailResult" var="catalogueDetail"
+					paginatorPosition="bottom" widgetVar="tableCatalogueDetailResult"
+					value="#{catalogueDetailAdministrationController.cataloguesDetail}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Cat&#225;logo" width="60px;" style="font-size: 12px;">
+						<h:outputText value="#{catalogueDetail.tsegcatalogue.name}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Nombre" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{catalogueDetail.name}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripci&#243;n" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{catalogueDetail.description}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewCatalogueDetail:gridNewCatalogueDetail"
+							process="tableCatalogueDetailResult" title="Ver"
+							oncomplete="PF('dlgNewCatalogueDetail').show()">
+							<f:setPropertyActionListener value="#{catalogueDetail}"
+								target="#{catalogueDetailAdministrationController.catalogoDetalle}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{catalogueDetailAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{catalogueDetailAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewCatalogueDetail:gridNewCatalogueDetail"
+							process="tableCatalogueDetailResult" title="Editar" 
+							oncomplete="PF('dlgNewCatalogueDetail').show()">
+							<f:setPropertyActionListener value="#{catalogueDetail}"
+								target="#{catalogueDetailAdministrationController.catalogoDetalle}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{catalogueDetailAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{catalogueDetailAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus"
+							process="tableCatalogueDetailResult :frmConSesion:frmDlgDeleteCatalogueDetail:gridDeleteCatalogueDetail" title="Eliminar"
+							update=":frmConSesion:frmDlgDeleteCatalogueDetail:gridDeleteCatalogueDetail"
+							oncomplete="PF('dlgDeleteCatalogueDetail').show()">
+							<f:setPropertyActionListener value="#{catalogueDetail}"
+								target="#{catalogueDetailAdministrationController.catalogoDetalle}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{catalogueDetailAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{catalogueDetailAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewCatalogueDetailRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewCatalogueDetail').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewCatalogueDetail').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteCatalogueDetailRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteCatalogueDetail').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteCatalogueDetail').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

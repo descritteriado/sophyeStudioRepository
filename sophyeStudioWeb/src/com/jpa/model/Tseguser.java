@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.util.general.UtilsX;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -54,6 +55,10 @@ public class Tseguser implements Serializable {
 	
 	@Transient
 	private String keyInCourse;
+
+	//bi-directional many-to-one association to Tseguserprofile
+	@OneToMany(mappedBy="tseguser")
+	private List<Tseguserprofile> tseguserprofiles;
 
 	public Tseguser() {
 	}
@@ -177,7 +182,7 @@ public class Tseguser implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
 	public String getKeyInCourse() {
 		String val="";
 		
@@ -199,6 +204,28 @@ public class Tseguser implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public List<Tseguserprofile> getTseguserprofiles() {
+		return this.tseguserprofiles;
+	}
+
+	public void setTseguserprofiles(List<Tseguserprofile> tseguserprofiles) {
+		this.tseguserprofiles = tseguserprofiles;
+	}
+
+	public Tseguserprofile addTseguserprofile(Tseguserprofile tseguserprofile) {
+		getTseguserprofiles().add(tseguserprofile);
+		tseguserprofile.setTseguser(this);
+
+		return tseguserprofile;
+	}
+
+	public Tseguserprofile removeTseguserprofile(Tseguserprofile tseguserprofile) {
+		getTseguserprofiles().remove(tseguserprofile);
+		tseguserprofile.setTseguser(null);
+
+		return tseguserprofile;
 	}
 
 }

@@ -15,5 +15,5 @@ public interface GenericDao<E> {
 	 * @param entity
 	 * @return
 	 */
-	boolean remove(E entity);
+	void remove(E entity) throws Exception;
 }

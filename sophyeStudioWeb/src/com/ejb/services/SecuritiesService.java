@@ -7,17 +7,21 @@ import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
 
-import com.dao.ModuleDao;
-import com.dao.ProfileDao;
-import com.dao.TransactionDao;
-import com.dao.UserDao;
+import com.dao.securities.ModuleDao;
+import com.dao.securities.ProfileDao;
+import com.dao.securities.ProfileTransactionDao;
+import com.dao.securities.TransactionDao;
+import com.dao.securities.UserDao;
+import com.dao.securities.UserProfileDao;
 import com.jpa.model.Tsegmodule;
 import com.jpa.model.Tsegprofile;
+import com.jpa.model.Tsegprofiletransaction;
 import com.jpa.model.Tsegtransaction;
 import com.jpa.model.Tseguser;
+import com.jpa.model.Tseguserprofile;
 
 @Stateless
-public class SecuritiesService  {
+public class SecuritiesService {
 
 	final static Logger logger = Logger.getLogger(SecuritiesService.class);
 
@@ -26,12 +30,18 @@ public class SecuritiesService  {
 
 	@EJB
 	ProfileDao<Tsegprofile> profileDao;
-	
+
 	@EJB
 	ModuleDao<Tsegmodule> moduleDao;
-	
+
 	@EJB
 	TransactionDao<Tsegtransaction> transactionDao;
+
+	@EJB
+	UserProfileDao<Tseguserprofile> userProfileDao;
+
+	@EJB
+	ProfileTransactionDao<Tsegprofiletransaction> profileTransactionDao;
 
 	/**
 	 * Metodo que obtiene el Menu
@@ -95,7 +105,7 @@ public class SecuritiesService  {
 
 		return profiles;
 	}
-	
+
 	/**
 	 * Metodo para consultar los modulos dados ciertos parametros
 	 * 
@@ -110,7 +120,7 @@ public class SecuritiesService  {
 
 		return modules;
 	}
-	
+
 	/**
 	 * Metodo para consultar las transacciones dados ciertos parametros
 	 * 
@@ -126,11 +136,45 @@ public class SecuritiesService  {
 		return transactions;
 	}
 
+	/**
+	 * Metodo para consultar la data dados ciertos parametros
+	 * 
+	 * @param userId
+	 * @param profileId
+	 * @return List<Tseguserprofile>
+	 */
+	public List<Tseguserprofile> getUsersProfiles(Integer userId, Integer profileId) throws Exception {
+
+		List<Tseguserprofile> userProfile = null;
+
+		userProfile = userProfileDao.getUsersProfiles(userId, profileId);
+
+		return userProfile;
+	}
+
+	/**
+	 * Metodo para consultar la data dados ciertos parametros
+	 * 
+	 * @param profileId
+	 * @param transactionId
+	 * @return List<Tsegprofiletransaction>
+	 */
+	public List<Tsegprofiletransaction> getProfilesTransactions(Integer profileId, Integer transactionId)
+			throws Exception {
+
+		List<Tsegprofiletransaction> profileTransactions = null;
+
+		profileTransactions = profileTransactionDao.getProfilesTransactions(profileId, transactionId);
+
+		return profileTransactions;
+	}
 
 	/**
 	 * Metodo para guardar o actualizar un Usuario
-	 * @param Tseguser user
-	 * @return boolean 
+	 * 
+	 * @param Tseguser
+	 *            user
+	 * @return boolean
 	 */
 	public boolean mergeUser(Tseguser user) {
 
@@ -139,8 +183,10 @@ public class SecuritiesService  {
 
 	/**
 	 * Metodo para guardar o actualizar un Perfil
-	 * @param Tsegprofile profile
-	 * @return boolean 
+	 * 
+	 * @param Tsegprofile
+	 *            profile
+	 * @return boolean
 	 */
 	public boolean mergeProfile(Tsegprofile profile) {
 
@@ -148,19 +194,22 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar un peril 
-	 * @param Tsegprofile profile
-	 * @return boolean
+	 * Metodo para eliminar un peril
+	 * 
+	 * @param Tsegprofile
+	 *            profile
 	 */
-	public boolean deleteProfile(Tsegprofile profile) {
+	public void deleteProfile(Tsegprofile profile) throws Exception {
 
-		return profileDao.remove(profile);
+		profileDao.remove(profile);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar un Modulo
-	 * @param Tsegmodule module
-	 * @return boolean 
+	 * 
+	 * @param Tsegmodule
+	 *            module
+	 * @return boolean
 	 */
 	public boolean mergeModule(Tsegmodule module) {
 
@@ -168,19 +217,22 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar un modulo 
-	 * @param Tsegmodule module
-	 * @return boolean
+	 * Metodo para eliminar un modulo
+	 * 
+	 * @param Tsegmodule
+	 *            module
 	 */
-	public boolean deleteModule(Tsegmodule module) {
+	public void deleteModule(Tsegmodule module) throws Exception {
 
-		return moduleDao.remove(module);
+		moduleDao.remove(module);
 	}
-	
+
 	/**
 	 * Metodo para guardar o actualizar una Transacion
-	 * @param Tsegtransaction transaction
-	 * @return boolean 
+	 * 
+	 * @param Tsegtransaction
+	 *            transaction
+	 * @return boolean
 	 */
 	public boolean mergeTransaction(Tsegtransaction transaction) {
 
@@ -188,13 +240,60 @@ public class SecuritiesService  {
 	}
 
 	/**
-	 * Metodo para eliminar una Transaccion 
-	 * @param Tsegtransaction transaction
+	 * Metodo para eliminar una Transaccion
+	 * 
+	 * @param Tsegtransaction
+	 *            transaction
+	 */
+	public void deleteTransaction(Tsegtransaction transaction) throws Exception {
+
+		transactionDao.remove(transaction);
+	}
+
+	/**
+	 * Metodo para guardar o actualizar Tseguserprofile
+	 * 
+	 * @param Tseguserprofile
+	 *            userPofile
 	 * @return boolean
 	 */
-	public boolean deleteTransaction(Tsegtransaction transaction) {
+	public boolean mergeUsersProfiles(Tseguserprofile userPofile) {
 
-		return transactionDao.remove(transaction);
+		return userProfileDao.merge(userPofile);
+	}
+
+	/**
+	 * Metodo para eliminar Tseguserprofile
+	 * 
+	 * @param Tseguserprofile
+	 *            userPofile
+	 */
+	public void deleteUsersProfiles(Tseguserprofile userPofile) throws Exception {
+
+		userProfileDao.remove(userPofile);
+	}
+
+	/**
+	 * Metodo para guardar o actualizar Tsegprofiletransaction
+	 * 
+	 * @param Tsegprofiletransaction
+	 *            profileTransaction
+	 * @return boolean
+	 */
+	public boolean mergeProfilesTransactions(Tsegprofiletransaction profileTransaction) {
+
+		return profileTransactionDao.merge(profileTransaction);
+	}
+
+	/**
+	 * Metodo para eliminar Tsegprofiletransaction
+	 * 
+	 * @param Tsegprofiletransaction
+	 *            profileTransaction
+	 */
+	public void deleteProfilesTransactions(Tsegprofiletransaction profileTransaction) throws Exception {
+
+		profileTransactionDao.remove(profileTransaction);
 	}
 
 }

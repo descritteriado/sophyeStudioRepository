@@ -1,0 +1,182 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+<ui:include src="/pages/clients/clientAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmClientAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administraci&#243;n de Clientes"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelClientSerch" footer="" header="Filtros de B&#250;squeda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="4" cellpadding="4">
+					<p:outputLabel for="document" value="Identificaci&#243;n:"
+						style="font-size: 12px;" />
+					<p:inputText id="document"
+						value="#{clientAdministrationController.document}"
+						style="font-size: 12px;" />
+					<p:outputLabel for="clientStatus" value="Estado:"
+						style="font-size: 12px;" />
+					<p:selectOneMenu id="clientStatus"
+						value="#{clientAdministrationController.status}"
+						style="width:125px; font-size: 12px;">
+						<f:selectItem itemValue="true" itemLabel="Activo" />
+						<f:selectItem itemValue="false" itemLabel="Inactivo" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="name" value="Nombres:" style="font-size: 12px;" />
+					<p:inputText id="name" value="#{clientAdministrationController.name}"
+						style="font-size: 12px;" />
+
+					<p:outputLabel for="lastName" value="Apellidos:"
+						style="font-size: 12px;" />
+					<p:inputText id="lastName"
+						value="#{clientAdministrationController.lastName}"
+						style="font-size: 12px;" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewClient:gridNewClient"
+						actionListener="#{clientAdministrationController.newClient}"
+						onclick="PF('dlgNewClient').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{clientAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{clientAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarClients1" value="Buscar"
+						update="tableClientResult" process="@this panelClientSerch"
+						actionListener="#{clientAdministrationController.consultClients('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelClientResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableClientResult" var="client"
+					paginatorPosition="bottom" widgetVar="tableClientResult"
+					value="#{clientAdministrationController.clients}" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Identificaci&#243;n" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{client.document}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Nombres" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{client.names}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Apellidos" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{client.lastnames}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Estado" width="60px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{client.status?'Activo':'Inactivo'}"
+							style="font-size: 11px;" />
+					</p:column>
+
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewClient:gridNewClient"
+							process="tableClientResult" title="Ver"
+							oncomplete="PF('dlgNewClient').show()">
+							<f:setPropertyActionListener value="#{client}"
+								target="#{clientAdministrationController.cliente}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{clientAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{clientAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document"
+							update=":frmConSesion:frmDlgNewClient:gridNewClient"
+							process="tableClientResult" action="#{clientAdministrationController.editCLient()}"
+							title="Editar" oncomplete="PF('dlgNewClient').show()">
+							<f:setPropertyActionListener value="#{client}"
+								target="#{clientAdministrationController.cliente}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{clientAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{clientAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus" process="tableClientResult :frmConSesion:frmDlgDeleteClient:gridDeleteClient"
+							title="Eliminar" update=":frmConSesion:frmDlgDeleteClient:gridDeleteClient"
+							oncomplete="PF('dlgDeleteClient').show()">
+							<f:setPropertyActionListener value="#{client}"
+								target="#{clientAdministrationController.cliente}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{clientAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{clientAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewClientRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewClient').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewClient').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteClientRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteClient').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteClient').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

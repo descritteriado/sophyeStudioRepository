@@ -27,14 +27,10 @@ public class GenericDaoImpl<Entity> implements GenericDao<Entity> {
 	}
 
 	@Override
-	public boolean remove(Entity entity) {
-		try {
+	public void remove(Entity entity)throws Exception {
+		
 			this.entityManager.remove(this.entityManager.contains(entity) ? entity : this.entityManager.merge(entity));
-			return true;
-		} catch (Exception e) {
-			logger.error(e);
-			return false;
-		}
+		
 	}
 
 }

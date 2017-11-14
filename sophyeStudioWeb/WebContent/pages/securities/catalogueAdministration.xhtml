@@ -1,0 +1,161 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+		<ui:include
+			src="/pages/securities/catalogueAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmCatalogueAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administraci&#243;n de Cat&#225;logos"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelCatalogueSearch" footer=""
+				header="Filtros de Búsqueda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel for="name" value="Nombre:" style="font-size: 12px;" />
+					<p:inputText id="name"
+						value="#{catalogueAdministrationController.catalogueName}"
+						style="font-size: 12px;" />
+
+					<p:outputLabel for="description" value="Descripci&#243;n:" style="font-size: 12px;" />
+					<p:inputText id="description"
+						value="#{catalogueAdministrationController.catalogueDescription}"
+						style="font-size: 12px;" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewCatalogue:gridNewCatalogue"
+						actionListener="#{catalogueAdministrationController.newCatalogue}"
+						onclick="PF('dlgNewCatalogue').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{catalogueAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{catalogueAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarCatalogues" value="Buscar"
+						update="tableCatalogueResult" process="@this panelCatalogueSearch"
+						actionListener="#{catalogueAdministrationController.consultCatalogues('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelCatalogueResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableCatalogueResult" var="catalogue"
+					paginatorPosition="bottom" widgetVar="tableCatalogueResult"
+					value="#{catalogueAdministrationController.catalogues}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Nombre" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{catalogue.name}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripci&#243;n" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{catalogue.description}"
+							style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewCatalogue:gridNewCatalogue"
+							process="tableCatalogueResult" title="Ver"
+							oncomplete="PF('dlgNewCatalogue').show()">
+							<f:setPropertyActionListener value="#{catalogue}"
+								target="#{catalogueAdministrationController.catalogo}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{catalogueAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{catalogueAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewCatalogue:gridNewCatalogue"
+							process="tableCatalogueResult :frmConSesion:frmDlgNewCatalogue:gridNewCatalogue"
+							title="Editar" oncomplete="PF('dlgNewCatalogue').show()">
+							<f:setPropertyActionListener value="#{catalogue}"
+								target="#{catalogueAdministrationController.catalogo}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{catalogueAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{catalogueAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus"
+							process="tableCatalogueResult :frmConSesion:frmDlgDeleteCatalogue:gridDeleteCatalogue" 
+							update=":frmConSesion:frmDlgDeleteCatalogue:gridDeleteCatalogue" title="Eliminar"
+							oncomplete="PF('dlgDeleteCatalogue').show()">
+							<f:setPropertyActionListener value="#{catalogue}"
+								target="#{catalogueAdministrationController.catalogo}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{catalogueAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{catalogueAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewCatalogueRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewCatalogue').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewCatalogue').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteCatalogueRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteCatalogue').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteCatalogue').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>

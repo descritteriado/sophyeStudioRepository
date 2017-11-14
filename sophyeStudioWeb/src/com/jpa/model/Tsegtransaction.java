@@ -22,11 +22,18 @@ public class Tsegtransaction implements Serializable {
 
 	private String description;
 
+	private Integer orderval;
+
 	private String url;
 
-	//bi-directional many-to-one association to Tsegmoduletransaction
+	//bi-directional many-to-one association to Tsegprofiletransaction
 	@OneToMany(mappedBy="tsegtransaction")
-	private List<Tsegmoduletransaction> tsegmoduletransactions;
+	private List<Tsegprofiletransaction> tsegprofiletransactions;
+
+	//bi-directional many-to-one association to Tsegmodule
+	@ManyToOne
+	@JoinColumn(name="idmodule")
+	private Tsegmodule tsegmodule;
 
 	public Tsegtransaction() {
 	}
@@ -55,6 +62,14 @@ public class Tsegtransaction implements Serializable {
 		this.description = description;
 	}
 
+	public Integer getOrderval() {
+		return this.orderval;
+	}
+
+	public void setOrderval(Integer orderval) {
+		this.orderval = orderval;
+	}
+
 	public String getUrl() {
 		return this.url;
 	}
@@ -63,26 +78,34 @@ public class Tsegtransaction implements Serializable {
 		this.url = url;
 	}
 
-	public List<Tsegmoduletransaction> getTsegmoduletransactions() {
-		return this.tsegmoduletransactions;
+	public List<Tsegprofiletransaction> getTsegprofiletransactions() {
+		return this.tsegprofiletransactions;
 	}
 
-	public void setTsegmoduletransactions(List<Tsegmoduletransaction> tsegmoduletransactions) {
-		this.tsegmoduletransactions = tsegmoduletransactions;
+	public void setTsegprofiletransactions(List<Tsegprofiletransaction> tsegprofiletransactions) {
+		this.tsegprofiletransactions = tsegprofiletransactions;
 	}
 
-	public Tsegmoduletransaction addTsegmoduletransaction(Tsegmoduletransaction tsegmoduletransaction) {
-		getTsegmoduletransactions().add(tsegmoduletransaction);
-		tsegmoduletransaction.setTsegtransaction(this);
+	public Tsegprofiletransaction addTsegprofiletransaction(Tsegprofiletransaction tsegprofiletransaction) {
+		getTsegprofiletransactions().add(tsegprofiletransaction);
+		tsegprofiletransaction.setTsegtransaction(this);
 
-		return tsegmoduletransaction;
+		return tsegprofiletransaction;
 	}
 
-	public Tsegmoduletransaction removeTsegmoduletransaction(Tsegmoduletransaction tsegmoduletransaction) {
-		getTsegmoduletransactions().remove(tsegmoduletransaction);
-		tsegmoduletransaction.setTsegtransaction(null);
+	public Tsegprofiletransaction removeTsegprofiletransaction(Tsegprofiletransaction tsegprofiletransaction) {
+		getTsegprofiletransactions().remove(tsegprofiletransaction);
+		tsegprofiletransaction.setTsegtransaction(null);
 
-		return tsegmoduletransaction;
+		return tsegprofiletransaction;
+	}
+
+	public Tsegmodule getTsegmodule() {
+		return this.tsegmodule;
+	}
+
+	public void setTsegmodule(Tsegmodule tsegmodule) {
+		this.tsegmodule = tsegmodule;
 	}
 
 }

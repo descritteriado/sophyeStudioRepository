@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="dlgDeleteProfileTransaction" modal="true"
+	widgetVar="dlgDeleteProfileTransaction" closable="false"
+	resizable="false" header="Eliminar Registro"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgDeleteProfileTransaction">
+		<h:panelGrid id="gridDeleteProfileTransaction" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteProfileTransaction :frmConSesion:frmProfileTransactionAdministration:panelProfileTransactionResult"
+						actionListener="#{profileTransactionAdministrationController.deleteProfileTransaction}"
+						oncomplete="handleDeleteProfileTransactionRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteProfileTransaction').hide();"
+						process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
+
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+<p:dialog id="dlgNewProfileTransaction" modal="true"
+	widgetVar="dlgNewProfileTransaction" closable="true" resizable="false"
+	header="Transacci&#243;n" style="font-size:xx-medium ;">
+	<h:form id="frmDlgNewProfileTransaction">
+
+		<h:panelGrid id="gridNewProfileTransaction" columns="1">
+			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
+				closable="true" />
+
+			<h:panelGrid id="gridNewProfileTransaction1" columns="2"
+				cellpadding="4">
+
+				<p:outputLabel for="editId" value="Id:" style="font-size: 12px;" />
+				<p:outputLabel id="editId"
+					value="#{profileTransactionAdministrationController.perfilTransaction.id}"
+					style="font-size: 12px;" />
+
+				<p:outputLabel for="editIdProfile" value="Perfil:"
+					style="font-size: 12px;" />
+
+				<h:selectOneMenu id="editIdProfile" required="true"
+					value="#{profileTransactionAdministrationController.perfilTransaction.tsegprofile.id}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{profileTransactionAdministrationController.edition}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems
+						value="#{profileTransactionAdministrationController.profiles}"
+						var="profile" itemValue="#{profile.id}"
+						itemLabel="#{profile.description}" />
+				</h:selectOneMenu>
+
+				<p:outputLabel id="viewIdProfile"
+					value="#{profileTransactionAdministrationController.perfilTransaction.tsegprofile.description}"
+					style="font-size: 12px;"
+					rendered="#{!profileTransactionAdministrationController.edition}" />
+
+				<p:outputLabel for="editIdTransaction" value="Transacci&#243;n:"
+					style="font-size: 12px;" />
+
+				<h:selectOneMenu id="editIdTransaction" required="true"
+					value="#{profileTransactionAdministrationController.perfilTransaction.tsegtransaction.id}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{profileTransactionAdministrationController.edition}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems
+						value="#{profileTransactionAdministrationController.transactions}"
+						var="transaction" itemValue="#{transaction.id}"
+						itemLabel="#{transaction.description}" />
+				</h:selectOneMenu>
+
+				<p:outputLabel id="viewIdTransaction"
+					value="#{profileTransactionAdministrationController.perfilTransaction.tsegtransaction.description}"
+					style="font-size: 12px;"
+					rendered="#{!profileTransactionAdministrationController.edition}" />
+
+				<p:outputLabel for="editComent" value="Comentario:"
+					style="font-size: 12px;" />
+				<p:inputText id="editComent" required="false"
+					value="#{profileTransactionAdministrationController.perfilTransaction.coment}"
+					style="font-size: 12px;  width:300px;"
+					rendered="#{profileTransactionAdministrationController.edition}" />
+				<p:outputLabel id="viewComent"
+					value="#{profileTransactionAdministrationController.perfilTransaction.coment}"
+					style="font-size: 12px;"
+					rendered="#{!profileTransactionAdministrationController.edition}" />
+
+			</h:panelGrid>
+			<p:separator />
+			<h:panelGrid columns="2" cellpadding="4">
+				<p:commandButton value="Guardar" id="btnGuardar"
+					update=":frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction :frmConSesion:frmProfileTransactionAdministration:panelProfileTransactionResult"
+					process=":frmConSesion:frmDlgNewProfileTransaction:gridNewProfileTransaction @this"
+					actionListener="#{profileTransactionAdministrationController.processProfileTransaction}"
+					oncomplete="handleNewProfileTransactionRequest(xhr, status, args)"
+					rendered="#{profileTransactionAdministrationController.edition}" />
+				<p:commandButton value="Aceptar"
+					onclick="PF('dlgNewProfileTransaction').hide();" process="@this"
+					rendered="#{!profileTransactionAdministrationController.edition}" />
+				<p:commandButton value="Cancelar"
+					onclick="PF('dlgNewProfileTransaction').hide();" process="@this" />
+			</h:panelGrid>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+
+
+<p:dialog id="dlgProcessProfileTransactionAdmin" modal="true"
+	widgetVar="statusDialog" draggable="false" closable="false"
+	resizable="false" header="Procesando..." style="font-size:xx-small;">
+	<p:graphicImage library="images" name="ajax-loader.gif" />
+</p:dialog>
+</html>

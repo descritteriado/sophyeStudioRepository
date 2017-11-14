@@ -1,228 +1,235 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 
-		<p:dialog id="dlgDeleteUser" modal="true" widgetVar="dlgDeleteUser"
-			closable="false" resizable="false" header="Eliminar Usuario"
-			style="font-size:xx-medium ;">
-			<h:panelGrid id="gridDeleteUser" columns="1">
+<p:dialog id="dlgDeleteUser" modal="true" widgetVar="dlgDeleteUser"
+	closable="false" resizable="false" header="Eliminar Usuario"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgDeleteUser">
+		<h:panelGrid id="gridDeleteUser" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteUser :frmConSesion:frmUserAdministration:panelUserResult"
+						actionListener="#{userAdministrationController.processUser}"
+						oncomplete="handleDeleteUserRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteUser').hide();" process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
 
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel value="Desea eliminar el registro seleccionado?"
-					style="font-size: 13px;" />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:outputLabel />
-				<p:separator />
-				<div align="center">
-					<h:panelGrid columns="2">
-						<p:commandButton value="Aceptar"
-							update="gridDeleteUser :frmConSesion:frmUserAdministration:panelUserResult"
-							actionListener="#{userAdministrationController.processUser}"
-							oncomplete="handleDeleteUserRequest(xhr, status, args)" />
-						<p:commandButton value="Cancelar"
-							onclick="PF('dlgDeleteUser').hide();" process="@this" />
-					</h:panelGrid>
-				</div>
-				<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
 
+<p:dialog id="dlgNewUser" modal="true" widgetVar="dlgNewUser"
+	closable="true" resizable="false" header="Usuario"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgNewUser">
+
+		<h:panelGrid id="gridNewUser" columns="1">
+			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
+				closable="true" />
+
+			<h:panelGrid id="gridNewUser1" columns="2" cellpadding="4">
+
+				<p:outputLabel for="editUserName" value="Usuario:"
+					style="font-size: 12px;" />
+				<p:inputText id="editUserName" required="true"
+					value="#{userAdministrationController.usuario.username}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewUserName"
+					value="#{userAdministrationController.usuario.username}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editPassword" value="Clave:"
+					style="font-size: 12px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:inputText id="editPassword" required="true" feedback="true"
+					value="#{userAdministrationController.usuario.keyInCourse}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+
+				<p:outputLabel for="editName" value="Nombres:"
+					style="font-size: 12px;" />
+				<p:inputText id="editName" required="true"
+					value="#{userAdministrationController.usuario.names}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewName"
+					value="#{userAdministrationController.usuario.names}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editLastName" value="Apellidos:"
+					style="font-size: 12px;" />
+				<p:inputText id="editLastName" required="true"
+					value="#{userAdministrationController.usuario.lastnames}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewLastName"
+					value="#{userAdministrationController.usuario.lastnames}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editPhone1" value="Celular:"
+					style="font-size: 12px;" />
+				<p:inputText id="editPhone1" required="true"
+					value="#{userAdministrationController.usuario.phone1}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewPhone1"
+					value="#{userAdministrationController.usuario.phone1}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editPhone2" value="Teléfono:"
+					style="font-size: 12px;" />
+				<p:inputText id="editPhone2" required="true"
+					value="#{userAdministrationController.usuario.phone2}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewPhone2"
+					value="#{userAdministrationController.usuario.phone2}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editEmail" value="Correo electrónico:"
+					style="font-size: 12px;" />
+				<p:inputText id="editEmail" required="true"
+					value="#{userAdministrationController.usuario.email}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewEmail"
+					value="#{userAdministrationController.usuario.email}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+
+				<p:outputLabel for="editBirthday" value="Fecha de nacimiento:"
+					style="font-size: 12px;" />
+				<p:calendar id="editBirthday" required="true"
+					value="#{userAdministrationController.usuario.birthday}"
+					style="font-size: 12px; width:300px;" pattern="yyyy-MM-dd"
+					locale="es" showOn="button" readonlyInput="true"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewBirthday"
+					value="#{userAdministrationController.usuario.birthday}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
 			</h:panelGrid>
-		</p:dialog>
 
-		<p:dialog id="dlgNewUser" modal="true" widgetVar="dlgNewUser"
-			closable="true" resizable="false" header="Usuario"
-			style="font-size:xx-medium ;">
-			<h:form id="frmDlgNewUser">
+			<h:panelGrid id="gridNewUser2" columns="2" cellpadding="2">
+				<p:outputLabel for="editAddress" value="Dirección Domiciliar:"
+					style="font-size: 12px;" />
+				<p:inputTextarea id="editAddress" required="true"
+					value="#{userAdministrationController.usuario.address}"
+					style="font-size: 12px;" rows="3" cols="70"
+					rendered="#{userAdministrationController.edition}" />
+				<p:outputLabel id="viewAddress"
+					value="#{userAdministrationController.usuario.address}"
+					style="font-size: 12px;"
+					rendered="#{!userAdministrationController.edition}" />
+			</h:panelGrid>
 
-				<h:panelGrid id="gridNewUser" columns="1">
-					<p:messages id="messagesDialog" showDetail="false"
-						autoUpdate="false" closable="true" />
-
-					<h:panelGrid id="gridNewUser1" columns="2" cellpadding="4">
-
-						<p:outputLabel for="editUserName" value="Usuario:"
+			<p:accordionPanel id="panelAccordionAdministration">
+				<p:tab title="Administración">
+					<h:panelGrid id="panelAdministration" columns="4" cellpadding="2">
+						<p:outputLabel for="editIsTemporal" value="Temporal:"
 							style="font-size: 12px;" />
-						<p:inputText id="editUserName" required="true"
-							value="#{userAdministrationController.usuario.username}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewUserName"
-							value="#{userAdministrationController.usuario.username}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
+						<p:selectBooleanButton id="editIsTemporal"
+							rendered="#{userAdministrationController.edition}"
+							value="#{userAdministrationController.usuario.istemporal}"
+							style="font-size: 12px; width:60px" onLabel="Si" offLabel="No">
+							<p:ajax event="change" update="editExpirationDate"
+								listener="#{userAdministrationController.isTemporal}"
+								process="@this" />
+						</p:selectBooleanButton>
+						<p:outputLabel id="viewIsTemporal"
+							value="#{userAdministrationController.usuario.istemporal?'Si':'No'}"
+							rendered="#{!userAdministrationController.edition}"
+							style="font-size: 11px;" />
 
-						<p:outputLabel for="editPassword" value="Clave:"
-							style="font-size: 12px;" rendered="#{userAdministrationController.edition}"/>
-						<p:inputText id="editPassword" required="true" feedback="true"
-							value="#{userAdministrationController.usuario.keyInCourse}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-							
-						<p:outputLabel for="editName" value="Nombres:"
-							style="font-size: 12px;" />
-						<p:inputText id="editName" required="true"
-							value="#{userAdministrationController.usuario.names}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewName"
-							value="#{userAdministrationController.usuario.names}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
-
-						<p:outputLabel for="editLastName" value="Apellidos:"
-							style="font-size: 12px;" />
-						<p:inputText id="editLastName" required="true"
-							value="#{userAdministrationController.usuario.lastnames}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewLastName"
-							value="#{userAdministrationController.usuario.lastnames}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
-
-						<p:outputLabel for="editPhone1" value="Celular:"
-							style="font-size: 12px;" />
-						<p:inputText id="editPhone1" required="true"
-							value="#{userAdministrationController.usuario.phone1}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewPhone1"
-							value="#{userAdministrationController.usuario.phone1}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
-
-						<p:outputLabel for="editPhone2" value="Teléfono:"
-							style="font-size: 12px;" />
-						<p:inputText id="editPhone2" required="true"
-							value="#{userAdministrationController.usuario.phone2}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewPhone2"
-							value="#{userAdministrationController.usuario.phone2}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
-
-						<p:outputLabel for="editEmail" value="Correo electrónico:"
-							style="font-size: 12px;" />
-						<p:inputText id="editEmail" required="true"
-							value="#{userAdministrationController.usuario.email}"
-							style="font-size: 12px;"
-							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewEmail"
-							value="#{userAdministrationController.usuario.email}"
-							style="font-size: 12px;"
-							rendered="#{!userAdministrationController.edition}" />
-
-						<p:outputLabel for="editBirthday" value="Fecha de nacimiento:"
-							style="font-size: 12px;" />
-						<p:calendar id="editBirthday" required="true"
-							value="#{userAdministrationController.usuario.birthday}"
+						<p:outputLabel for="editExpirationDate"
+							value="Fecha de Caducidad:" style="font-size: 12px;" />
+						<p:calendar id="editExpirationDate"
+							value="#{userAdministrationController.usuario.expirationdate}"
+							disabled="#{!userAdministrationController.usuario.istemporal}"
 							style="font-size: 12px;" pattern="yyyy-MM-dd" locale="es"
 							showOn="button" readonlyInput="true"
 							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewBirthday"
-							value="#{userAdministrationController.usuario.birthday}"
+						<p:outputLabel id="viewExpirationDate"
+							value="#{userAdministrationController.usuario.expirationdate}"
 							style="font-size: 12px;"
 							rendered="#{!userAdministrationController.edition}" />
-					</h:panelGrid>
 
-					<h:panelGrid id="gridNewUser2" columns="2" cellpadding="2">
-						<p:outputLabel for="editAddress" value="Dirección Domiciliar:"
+
+						<p:outputLabel for="editIsLock" value="Bloqueado:"
 							style="font-size: 12px;" />
-						<p:inputTextarea id="editAddress" required="true"
-							value="#{userAdministrationController.usuario.address}"
-							style="font-size: 12px;" rows="3" cols="70"
+						<p:selectBooleanButton id="editIsLock"
+							rendered="#{userAdministrationController.edition}"
+							value="#{userAdministrationController.usuario.status}"
+							style="font-size: 12px; width:60px" onLabel="Si" offLabel="No" />
+						<p:outputLabel id="viewIsLock"
+							value="#{userAdministrationController.usuario.status?'Si':'No'}"
+							rendered="#{!userAdministrationController.edition}"
+							style="font-size: 11px;" />
+
+						<p:outputLabel for="editLockDate" value="Fecha de Bloqueo:"
+							style="font-size: 12px;" />
+						<p:calendar id="editLockDate"
+							value="#{userAdministrationController.usuario.lockdate}"
+							disabled="true" style="font-size: 12px;" pattern="yyyy-MM-dd"
+							locale="es" showOn="button" readonlyInput="true"
 							rendered="#{userAdministrationController.edition}" />
-						<p:outputLabel id="viewAddress"
-							value="#{userAdministrationController.usuario.address}"
+						<p:outputLabel id="viewLockDate"
+							value="#{userAdministrationController.usuario.lockdate}"
 							style="font-size: 12px;"
 							rendered="#{!userAdministrationController.edition}" />
 					</h:panelGrid>
+				</p:tab>
 
-					<p:accordionPanel id="panelAccordionAdministration">
-						<p:tab title="Administración">
-							<h:panelGrid id="panelAdministration" columns="4" cellpadding="2">
-								<p:outputLabel for="editIsTemporal" value="Temporal:"
-									style="font-size: 12px;" />
-								<p:selectBooleanButton id="editIsTemporal"
-									rendered="#{userAdministrationController.edition}"
-									value="#{userAdministrationController.usuario.istemporal}"
-									style="font-size: 12px; width:60px" onLabel="Si" offLabel="No">
-									<p:ajax event="change" update="editExpirationDate"
-										listener="#{userAdministrationController.isTemporal}"
-										process="@this" />
-								</p:selectBooleanButton>
-								<p:outputLabel id="viewIsTemporal"
-									value="#{userAdministrationController.usuario.istemporal?'Si':'No'}"
-									rendered="#{!userAdministrationController.edition}"
-									style="font-size: 11px;" />
+			</p:accordionPanel>
 
-								<p:outputLabel for="editExpirationDate"
-									value="Fecha de Caducidad:" style="font-size: 12px;" />
-								<p:calendar id="editExpirationDate"
-									value="#{userAdministrationController.usuario.expirationdate}"
-									disabled="#{!userAdministrationController.usuario.istemporal}"
-									style="font-size: 12px;" pattern="yyyy-MM-dd" locale="es"
-									showOn="button" readonlyInput="true"
-									rendered="#{userAdministrationController.edition}" />
-								<p:outputLabel id="viewExpirationDate"
-									value="#{userAdministrationController.usuario.expirationdate}"
-									style="font-size: 12px;"
-									rendered="#{!userAdministrationController.edition}" />
-
-
-								<p:outputLabel for="editIsLock" value="Bloqueado:"
-									style="font-size: 12px;" />
-								<p:selectBooleanButton id="editIsLock"
-									rendered="#{userAdministrationController.edition}"
-									value="#{userAdministrationController.usuario.status}"
-									style="font-size: 12px; width:60px" onLabel="Si" offLabel="No" />
-								<p:outputLabel id="viewIsLock"
-									value="#{userAdministrationController.usuario.status?'Si':'No'}"
-									rendered="#{!userAdministrationController.edition}"
-									style="font-size: 11px;" />
-
-								<p:outputLabel for="editLockDate" value="Fecha de Bloqueo:"
-									style="font-size: 12px;" />
-								<p:calendar id="editLockDate"
-									value="#{userAdministrationController.usuario.lockdate}"
-									disabled="true" style="font-size: 12px;" pattern="yyyy-MM-dd"
-									locale="es" showOn="button" readonlyInput="true"
-									rendered="#{userAdministrationController.edition}" />
-								<p:outputLabel id="viewLockDate"
-									value="#{userAdministrationController.usuario.lockdate}"
-									style="font-size: 12px;"
-									rendered="#{!userAdministrationController.edition}" />
-							</h:panelGrid>
-						</p:tab>
-
-					</p:accordionPanel>
-
-					<p:separator />
-					<h:panelGrid columns="2" cellpadding="4">
-						<p:commandButton value="Guardar" id="btnGuardar"
-							update=":frmConSesion:frmDlgNewUser:gridNewUser :frmConSesion:frmUserAdministration:panelUserResult"
-							process=":frmConSesion:frmDlgNewUser:gridNewUser @this"
-							actionListener="#{userAdministrationController.processUser}"
-							oncomplete="handleNewUserRequest(xhr, status, args)"
-							rendered="#{userAdministrationController.edition}" />
-						<p:commandButton value="Aceptar"
-							onclick="PF('dlgNewUser').hide();" process="@this"
-							rendered="#{!userAdministrationController.edition}" />
-						<p:commandButton value="Cancelar"
-							onclick="PF('dlgNewUser').hide();" process="@this" />
-					</h:panelGrid>
-					<p:separator />
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
+			<p:separator />
+			<h:panelGrid columns="2" cellpadding="4">
+				<p:commandButton value="Guardar" id="btnGuardar"
+					update=":frmConSesion:frmDlgNewUser:gridNewUser :frmConSesion:frmUserAdministration:panelUserResult"
+					process=":frmConSesion:frmDlgNewUser:gridNewUser @this"
+					actionListener="#{userAdministrationController.processUser}"
+					oncomplete="handleNewUserRequest(xhr, status, args)"
+					rendered="#{userAdministrationController.edition}" />
+				<p:commandButton value="Aceptar" onclick="PF('dlgNewUser').hide();"
+					process="@this" rendered="#{!userAdministrationController.edition}" />
+				<p:commandButton value="Cancelar" onclick="PF('dlgNewUser').hide();"
+					process="@this" />
+			</h:panelGrid>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
 
 
 
-		<p:dialog id="dlgProcessUserAdmin" modal="true"
-			widgetVar="statusDialog" draggable="false" closable="false"
-			resizable="false" header="Procesando..." style="font-size:xx-small;">
-			<p:graphicImage library="images" name="ajax-loader.gif" />
-		</p:dialog>
+<p:dialog id="dlgProcessUserAdmin" modal="true" widgetVar="statusDialog"
+	draggable="false" closable="false" resizable="false"
+	header="Procesando..." style="font-size:xx-small;">
+	<p:graphicImage library="images" name="ajax-loader.gif" />
+</p:dialog>
 </html>

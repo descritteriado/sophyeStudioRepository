@@ -1,0 +1,164 @@
+<ui:composition template="/templates/conSesion.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="contenidoDialog">
+		<ui:include
+			src="/pages/securities/parameterAdministrationDialogs.xhtml" />
+	</ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmParameterAdministration">
+
+			<p:separator />
+			<p:outputLabel value="Administración de P&#225;rametros"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0; font-size: 16px; color:orange;"></p:outputLabel>
+			<p:separator />
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" redisplay="true" />
+
+			<p:outputLabel />
+			<p:outputLabel />
+
+			<p:panel id="panelParameterSearch" footer=""
+				header="Filtros de Búsqueda"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+
+				<h:panelGrid columns="2" cellpadding="4">
+					<p:outputLabel for="name" value="Par&#225;metro:"
+						style="font-size: 12px;" />
+					<p:inputText id="name"
+						value="#{parameterAdministrationController.parameterName}"
+						style="font-size: 12px;" />
+					<p:outputLabel for="description" value="Descripci&#243;n:"
+						style="font-size: 12px;" />
+					<p:inputText id="description"
+						value="#{parameterAdministrationController.parameterDescription}"
+						style="font-size: 12px;" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="panelActions" header="Acciones"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<div align="center">
+					<p:commandButton value="Nuevo" process="@this"
+						update=":frmConSesion:frmDlgNewParameter:gridNewParameter"
+						actionListener="#{parameterAdministrationController.newParameter}"
+						onclick="PF('dlgNewParameter').show();">
+						<f:setPropertyActionListener value="#{true}"
+							target="#{parameterAdministrationController.edition}" />
+						<f:setPropertyActionListener value="#{0}"
+							target="#{parameterAdministrationController.actionType}" />
+					</p:commandButton>
+
+					<p:commandButton id="buscarParameters" value="Buscar"
+						update="tableParameterResult" process="@this panelParameterSearch"
+						actionListener="#{parameterAdministrationController.consultParameters('front')}" />
+				</div>
+			</p:panel>
+
+			<p:panel id="panelParameterResult" footer="" header="Resultados"
+				style="margin-bottom:20px; margin-left:3px;width:99%;border:0">
+				<p:dataTable id="tableParameterResult" var="parameter"
+					paginatorPosition="bottom" widgetVar="tableParameterResult"
+					value="#{parameterAdministrationController.parameters}"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rows="10" style="font-size:small;" rowStyleClass="pow1,pow2"
+					emptyMessage="No existen Registros">
+
+					<p:column headerText="Nombre" width="38px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{parameter.name}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column headerText="Descripci&#243;n" width="90px;"
+						style="font-size: 12px;">
+						<h:outputText value="#{parameter.description}"
+							style="font-size: 11px;" />
+					</p:column>
+					<p:column headerText="Valor" width="20px;" style="font-size: 12px;">
+						<h:outputText value="#{parameter.value}" style="font-size: 11px;" />
+					</p:column>
+
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton icon="ui-icon-search"
+							update=":frmConSesion:frmDlgNewParameter:gridNewParameter"
+							process="tableParameterResult" title="Ver"
+							oncomplete="PF('dlgNewParameter').show()">
+							<f:setPropertyActionListener value="#{parameter}"
+								target="#{parameterAdministrationController.parametro}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{parameterAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{3}"
+								target="#{parameterAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+
+						<p:commandButton icon="ui-icon-document "
+							update=":frmConSesion:frmDlgNewParameter:gridNewParameter"
+							process="tableParameterResult :frmConSesion:frmDlgNewParameter:gridNewParameter"
+							title="Editar" oncomplete="PF('dlgNewParameter').show()">
+							<f:setPropertyActionListener value="#{parameter}"
+								target="#{parameterAdministrationController.parametro}" />
+							<f:setPropertyActionListener value="#{true}"
+								target="#{parameterAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{1}"
+								target="#{parameterAdministrationController.actionType}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+
+						<p:commandButton icon="ui-icon-minus"
+							process="tableParameterResult :frmConSesion:frmDlgDeleteParameter:gridDeleteParameter" title="Eliminar"
+							update=":frmConSesion:frmDlgDeleteParameter:gridDeleteParameter"
+							oncomplete="PF('dlgDeleteParameter').show()">
+							<f:setPropertyActionListener value="#{parameter}"
+								target="#{parameterAdministrationController.parametro}" />
+							<f:setPropertyActionListener value="#{false}"
+								target="#{parameterAdministrationController.edition}" />
+							<f:setPropertyActionListener value="#{2}"
+								target="#{parameterAdministrationController.actionType}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+
+			<script type="text/javascript">
+				function start() {
+					PF('statusDialog').show();
+				}
+
+				function stop() {
+					PF('statusDialog').hide();
+				}
+				function handleNewParameterRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgNewParameter').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgNewParameter').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+				function handleDeleteParameterRequest(xhr, status, args) {
+					if (args.validationFailed || !args.confirmation) {
+						PF('dlgDeleteParameter').jq.effect("shake", {
+							times : 5
+						}, 100);
+					} else {
+						PF('dlgDeleteParameter').hide();
+						$('#loginLink').fadeOut();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
+</ui:composition>
