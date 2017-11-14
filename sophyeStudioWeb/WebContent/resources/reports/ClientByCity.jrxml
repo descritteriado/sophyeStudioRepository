@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClientByCity" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f764b54c-3651-45fa-bf6d-515e73433066">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="provinceId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cantonId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parroquiaId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from tcliclient
+where 1=1
+and ($P{provinceId} is null or province = $P{provinceId})
+and ($P{cantonId} is null or province = $P{cantonId})
+and ($P{parroquiaId} is null or province = $P{parroquiaId})]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="documenttype" class="java.lang.Integer"/>
+	<field name="document" class="java.lang.String"/>
+	<field name="names" class="java.lang.String"/>
+	<field name="lastnames" class="java.lang.String"/>
+	<field name="province" class="java.lang.Integer"/>
+	<field name="canton" class="java.lang.Integer"/>
+	<field name="parroquia" class="java.lang.Integer"/>
+	<field name="neighbourhood" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="phone1" class="java.lang.Integer"/>
+	<field name="phone2" class="java.lang.Integer"/>
+	<field name="birthday" class="java.sql.Date"/>
+	<field name="status" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[0 Activo
+1 Bloqueado]]></fieldDescription>
+	</field>
+	<field name="deleted" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[0 Registro Activo
+1 Registro Borrado
+]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="5" width="263" height="33" forecolor="#000000" uuid="4cb56c32-a29c-4e60-a739-86cb5207c8ef"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Clientes por Ciudad]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="100" height="34" uuid="2a63ff14-0736-42b7-845b-8817029791bc"/>
+				<text><![CDATA[Tipo Identificación]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="756e4786-083b-4fb3-9271-79f8924b51a4"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="100" y="0" width="100" height="34" uuid="6c8c66da-9760-4400-99d6-6210878bb2d9"/>
+				<text><![CDATA[Identificación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="200" y="0" width="201" height="34" uuid="0ea806cb-4425-4577-85f8-3208f21e034a"/>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="401" y="0" width="152" height="34" uuid="09ad65f0-a6a3-40e3-9171-d6ddc9cb3874"/>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="26" width="555" height="1" uuid="b3017a9d-0fa6-40d9-9a9a-34e9d15b61aa"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="3" width="100" height="20" uuid="3fd6b368-d780-4809-a6fd-964d860f0b34"/>
+				<textFieldExpression><![CDATA[$F{documenttype}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="3" width="100" height="20" uuid="564789a2-b0c1-44b4-ad98-19ea9c2d8977"/>
+				<textFieldExpression><![CDATA[$F{document}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="3" width="201" height="20" uuid="2a05a629-bac8-48e6-901d-e7907334ffe5"/>
+				<textFieldExpression><![CDATA[$F{lastnames}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="401" y="3" width="152" height="20" uuid="c8343902-169c-425a-b18c-3016bb7ec08b"/>
+				<textFieldExpression><![CDATA[$F{names}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="fe0ca3f4-9c93-4f56-96f5-9e27eb3be796"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="5940844d-556a-4f8c-b83d-c65e7e929b3f"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="85cb4fa8-e21b-4a68-be40-72923d305da1"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="8e505de1-9635-410d-94cb-acc15898113a"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

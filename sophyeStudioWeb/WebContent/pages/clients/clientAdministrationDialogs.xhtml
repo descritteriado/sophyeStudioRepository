@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="dlgDeleteClient" modal="true" widgetVar="dlgDeleteClient"
+	closable="false" resizable="false" header="Eliminar Cliente"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgDeleteClient">
+		<h:panelGrid id="gridDeleteClient" columns="1">
+			<p:messages id="messagesDeleteDialog" showDetail="false"
+				autoUpdate="false" closable="true" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel value="Desea eliminar el registro seleccionado?"
+				style="font-size: 13px;" />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:outputLabel />
+			<p:separator />
+			<div align="center">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar"
+						update="gridDeleteClient :frmConSesion:frmClientAdministration:panelClientResult"
+						actionListener="#{clientAdministrationController.processClient}"
+						oncomplete="handleDeleteClientRequest(xhr, status, args)" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDeleteClient').hide();" process="@this" />
+				</h:panelGrid>
+			</div>
+			<p:separator />
+
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+<p:dialog id="dlgNewClient" modal="true" widgetVar="dlgNewClient"
+	closable="true" resizable="false" header="Cliente"
+	style="font-size:xx-medium ;">
+	<h:form id="frmDlgNewClient">
+
+		<h:panelGrid id="gridNewClient" columns="1">
+			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
+				closable="true" />
+			
+			<h:panelGrid id="gridNewClient1" columns="2" cellpadding="4">
+
+				<p:outputLabel for="editDocumentType"
+					value="Tipo de Identificaci&#243;n:" style="font-size: 12px;" />
+
+				<h:selectOneMenu id="editDocumentType" required="true"
+					value="#{clientAdministrationController.cliente.documentType.id}"
+					style="font-size: 12px; width:310px;"
+					rendered="#{clientAdministrationController.edition}">
+					<f:selectItem itemLabel="" itemValue="" />
+					<f:selectItems
+						value="#{clientAdministrationController.documentTypes}"
+						var="documentType" itemValue="#{documentType.id}"
+						itemLabel="#{documentType.name}" />
+				</h:selectOneMenu>
+				<p:outputLabel id="viewDocumentType"
+					value="#{clientAdministrationController.cliente.documentType.name}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editDocument" value="Identificaci&#243;n:"
+					style="font-size: 12px;" />
+				<p:inputText id="editDocument" required="true"
+					value="#{clientAdministrationController.cliente.document}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewDocument"
+					value="#{clientAdministrationController.cliente.document}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editName" value="Nombres:"
+					style="font-size: 12px;" />
+				<p:inputText id="editName" required="true"
+					value="#{clientAdministrationController.cliente.names}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewName"
+					value="#{clientAdministrationController.cliente.names}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editLastName" value="Apellidos:"
+					style="font-size: 12px;" />
+				<p:inputText id="editLastName" required="true"
+					value="#{clientAdministrationController.cliente.lastnames}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewLastName"
+					value="#{clientAdministrationController.cliente.lastnames}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editPhone1" value="Celular:"
+					style="font-size: 12px;" />
+				<p:inputText id="editPhone1" required="true"
+					value="#{clientAdministrationController.cliente.phone1}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewPhone1"
+					value="#{clientAdministrationController.cliente.phone1}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editPhone2" value="Teléfono:"
+					style="font-size: 12px;" />
+				<p:inputText id="editPhone2" required="true"
+					value="#{clientAdministrationController.cliente.phone2}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewPhone2"
+					value="#{clientAdministrationController.cliente.phone2}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editEmail" value="Correo electrónico:"
+					style="font-size: 12px;" />
+				<p:inputText id="editEmail" required="true"
+					value="#{clientAdministrationController.cliente.email}"
+					style="font-size: 12px; width:300px;"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewEmail"
+					value="#{clientAdministrationController.cliente.email}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editBirthday" value="Fecha de nacimiento:"
+					style="font-size: 12px;" />
+				<p:calendar id="editBirthday" required="true"
+					value="#{clientAdministrationController.cliente.birthday}"
+					style="font-size: 12px; width:300px;" pattern="yyyy-MM-dd"
+					locale="es" showOn="button" readonlyInput="true"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:outputLabel id="viewBirthday"
+					value="#{clientAdministrationController.cliente.birthday}"
+					style="font-size: 12px;"
+					rendered="#{!clientAdministrationController.edition}" />
+
+				<p:outputLabel for="editIsActive" value="Estado:"
+					style="font-size: 12px;" />
+				<p:selectBooleanButton id="editIsActive"
+					rendered="#{clientAdministrationController.edition}"
+					value="#{clientAdministrationController.cliente.status}"
+					style="font-size: 12px; width:60px" onLabel="Activo" offLabel="Inactivo" />
+				<p:outputLabel id="viewIsActive"
+					value="#{clientAdministrationController.cliente.status?'Activo':'Inactivo'}"
+					rendered="#{!clientAdministrationController.edition}"
+					style="font-size: 11px;" />
+			</h:panelGrid>
+
+
+			<p:accordionPanel id="panelAccordionGLocation" style="width:460px">
+				<p:tab title="Ubicaci&#243;n Geogr&#225;fica">
+
+					<h:panelGrid id="gridNewClient2" columns="2" cellpadding="2">
+
+						<p:outputLabel for="editProvince" value="Provincia:"
+							style="font-size: 12px;" />
+
+						<h:selectOneMenu id="editProvince" required="true"
+							value="#{clientAdministrationController.cliente.province.id}"
+							style="font-size: 12px; width:300px;"
+							rendered="#{clientAdministrationController.edition}">
+							<f:selectItem itemLabel="" itemValue="" />
+							<f:selectItems
+								value="#{clientAdministrationController.provinces}"
+								var="province" itemValue="#{province.id}"
+								itemLabel="#{province.name}" />
+							<f:ajax event="change" execute="editProvince @this"
+								render="editCanton editParroquia"
+								listener="#{clientAdministrationController.consultCantones}" />
+						</h:selectOneMenu>
+						<p:outputLabel id="viewProvince"
+							value="#{clientAdministrationController.cliente.province.name}"
+							style="font-size: 12px;"
+							rendered="#{!clientAdministrationController.edition}" />
+
+
+						<p:outputLabel for="editCanton" value="Cant&#243;n:"
+							style="font-size: 12px;" />
+
+						<h:selectOneMenu id="editCanton" required="true"
+							disabled="#{clientAdministrationController.cantonDisabled}"
+							value="#{clientAdministrationController.cliente.canton.id}"
+							style="font-size: 12px; width:300px;"
+							rendered="#{clientAdministrationController.edition}">
+							<f:selectItems value="#{clientAdministrationController.cantones}"
+								var="canton" itemValue="#{canton.id}" itemLabel="#{canton.name}" />
+								<f:ajax event="change" execute="@this" render="editParroquia"
+								listener="#{clientAdministrationController.consultParroquias}" />
+						</h:selectOneMenu>
+						<p:outputLabel id="viewCanton"
+							value="#{clientAdministrationController.cliente.canton.name}"
+							style="font-size: 12px;"
+							rendered="#{!clientAdministrationController.edition}" />
+
+						<p:outputLabel for="editParroquia" value="Parroquia:"
+							style="font-size: 12px;" />
+
+						<h:selectOneMenu id="editParroquia" required="true"
+							disabled="#{clientAdministrationController.parroquiaDisabled}"
+							value="#{clientAdministrationController.cliente.parroquia.id}"
+							style="font-size: 12px; width:300px;"
+							rendered="#{clientAdministrationController.edition}">
+							<f:selectItems
+								value="#{clientAdministrationController.parroquias}"
+								var="parroquia" itemValue="#{parroquia.id}"
+								itemLabel="#{parroquia.name}" />							
+						</h:selectOneMenu>
+						<p:outputLabel id="viewParroquia"
+							value="#{clientAdministrationController.cliente.parroquia.name}"
+							style="font-size: 12px;"
+							rendered="#{!clientAdministrationController.edition}" />
+
+						<p:outputLabel for="editNeighbourhood" value="Barrio:"
+							style="font-size: 12px;" />
+						<p:inputText id="editNeighbourhood" required="true"
+							value="#{clientAdministrationController.cliente.neighbourhood}"
+							style="font-size: 12px; width:293px;"
+							rendered="#{clientAdministrationController.edition}" />
+						<p:outputLabel id="viewNeighbourhood"
+							value="#{clientAdministrationController.cliente.neighbourhood}"
+							style="font-size: 12px;"
+							rendered="#{!clientAdministrationController.edition}" />
+
+						<p:outputLabel for="editAddress" value="Dirección Domiciliar:"
+							style="font-size: 12px;" />
+						<p:inputTextarea id="editAddress" required="true"
+							value="#{clientAdministrationController.cliente.address}"
+							style="font-size: 12px;" rows="5" cols="46"
+							rendered="#{clientAdministrationController.edition}" />
+						<p:outputLabel id="viewAddress"
+							value="#{clientAdministrationController.cliente.address}"
+							style="font-size: 12px;"
+							rendered="#{!clientAdministrationController.edition}" />
+					</h:panelGrid>
+				</p:tab>
+			</p:accordionPanel>
+
+			<p:separator />
+			<h:panelGrid columns="2" cellpadding="4">
+				<p:commandButton value="Guardar" id="btnGuardar"
+					update=":frmConSesion:frmDlgNewClient:gridNewClient :frmConSesion:frmClientAdministration:panelClientResult"
+					process=":frmConSesion:frmDlgNewClient:gridNewClient @this"
+					actionListener="#{clientAdministrationController.processClient}"
+					oncomplete="handleNewClientRequest(xhr, status, args)"
+					rendered="#{clientAdministrationController.edition}" />
+				<p:commandButton value="Aceptar"
+					onclick="PF('dlgNewClient').hide();" process="@this"
+					rendered="#{!clientAdministrationController.edition}" />
+				<p:commandButton value="Cancelar"
+					onclick="PF('dlgNewClient').hide();" process="@this" />
+			</h:panelGrid>
+			<p:separator />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+
+
+
+<p:dialog id="dlgProcessClientAdmin" modal="true"
+	widgetVar="statusDialog" draggable="false" closable="false"
+	resizable="false" header="Procesando..." style="font-size:xx-small;">
+	<p:graphicImage library="images" name="ajax-loader.gif" />
+</p:dialog>
+</html>

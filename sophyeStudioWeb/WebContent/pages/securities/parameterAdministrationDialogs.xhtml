@@ -77,13 +77,13 @@
 
 				<p:outputLabel for="editDescription" value="Descripci&#243;n:"
 					style="font-size: 12px;" />
-				<p:inputTextarea id="editDescription" required="true"
+				<p:inputTextarea id="editDescription" required="true" 
 					value="#{parameterAdministrationController.parametro.description}"
 					style="font-size: 12px;" rows="3" cols="70"
 					rendered="#{parameterAdministrationController.edition}" />
-				<p:outputLabel id="viewDescription"
+				<p:outputLabel id="viewDescription" 
 					value="#{parameterAdministrationController.parametro.description}"
-					style="font-size: 12px;"
+					style="font-size: 12px; display: block; width: 300px;" 
 					rendered="#{!parameterAdministrationController.edition}" />
 			</h:panelGrid>
 

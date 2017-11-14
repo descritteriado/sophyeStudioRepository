@@ -9,9 +9,13 @@
     <class>com.jpa.model.Tsegprofile</class>
     <class>com.jpa.model.Tsegprofiletransaction</class>
     <class>com.jpa.model.Tsegtransaction</class>
+    <class>com.jpa.model.Tsegparameter</class>
+    <class>com.jpa.model.Tcliclient</class>
+    <class>com.jpa.model.Tsegcanton</class>
+    <class>com.jpa.model.Tsegparroquia</class>
+    <class>com.jpa.model.Tsegprovince</class>
     <class>com.jpa.model.Tsegcatalogue</class>
     <class>com.jpa.model.Tsegcataloguedetail</class>
-    <class>com.jpa.model.Tsegparameter</class>
     
      <properties>
       <property name="hibernate.show_sql" value="false"/>

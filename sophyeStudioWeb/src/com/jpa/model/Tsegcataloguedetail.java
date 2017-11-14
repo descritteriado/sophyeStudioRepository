@@ -2,6 +2,7 @@ package com.jpa.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -22,6 +23,10 @@ public class Tsegcataloguedetail implements Serializable {
 	private String name;
 
 	private String value;
+
+	//bi-directional many-to-one association to Tcliclient
+	@OneToMany(mappedBy="documentType")
+	private List<Tcliclient> tcliclients;
 
 	//bi-directional many-to-one association to Tsegcatalogue
 	@ManyToOne
@@ -61,6 +66,28 @@ public class Tsegcataloguedetail implements Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public List<Tcliclient> getTcliclients() {
+		return this.tcliclients;
+	}
+
+	public void setTcliclients(List<Tcliclient> tcliclients) {
+		this.tcliclients = tcliclients;
+	}
+
+	public Tcliclient addTcliclient(Tcliclient tcliclient) {
+		getTcliclients().add(tcliclient);
+		tcliclient.setDocumentType(this);
+
+		return tcliclient;
+	}
+
+	public Tcliclient removeTcliclient(Tcliclient tcliclient) {
+		getTcliclients().remove(tcliclient);
+		tcliclient.setDocumentType(null);
+
+		return tcliclient;
 	}
 
 	public Tsegcatalogue getTsegcatalogue() {
