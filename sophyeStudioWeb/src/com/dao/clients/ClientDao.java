@@ -29,11 +29,15 @@ public class ClientDao<Entity> extends GenericDaoImpl<Entity> {
 	 * @return Lista de clientes List<Tsegclient>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Tcliclient> getClients(String document, String name, String lastName, boolean status) throws Exception {
+	public List<Tcliclient> getClients(String document, String name, String lastName, Boolean status) throws Exception {
 
 		List<Tcliclient> clients = null;
-		String preQuery = "SELECT u FROM Tcliclient as u " + "WHERE u.deleted= false and u.status= :status ";
+		String preQuery = "SELECT u FROM Tcliclient as u " + "WHERE u.deleted= false ";
 
+		if (status != null) {
+
+			preQuery = preQuery.concat("and u.status= :status ");
+		}
 		if (!document.isEmpty()) {
 
 			preQuery = preQuery.concat("and  u.document like :document ");
@@ -46,7 +50,9 @@ public class ClientDao<Entity> extends GenericDaoImpl<Entity> {
 		}
 
 		Query query = entityManager.createQuery(preQuery);
-		query.setParameter("status", status);
+		if (status != null) {
+			query.setParameter("status", status);
+		}
 
 		if (!document.isEmpty()) {
 			query.setParameter("document", "%" + document + "%");

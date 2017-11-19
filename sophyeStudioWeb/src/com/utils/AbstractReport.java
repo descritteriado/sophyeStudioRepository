@@ -28,7 +28,7 @@ public abstract class AbstractReport {
 	}
 
 	private ExportOption exportOption;
-	private final String COMPILE_DIR = "/resources/reports/";
+	private String compileDir;
 	private String message;
 
 	public AbstractReport() {
@@ -89,7 +89,11 @@ public abstract class AbstractReport {
 	}
 
 	protected String getCompileDir() {
-		return COMPILE_DIR;
+		return compileDir;
+	}
+	
+	protected void setCompileDir(String compileDir) {
+		this.compileDir = compileDir;
 	}
 
 	protected abstract String getCompileFileName();

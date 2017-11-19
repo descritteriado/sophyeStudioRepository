@@ -44,9 +44,9 @@
 		</p:idleMonitor>
 		<table width="75%" border="0" align="center">
 			<tr>
-				<td align="left" colspan="2"><p:panel style="height:70px;">
-						<p:graphicImage library="images" name="logoColor.jpg"
-							style="height:60px;6" />
+				<td align="left" colspan="2"><p:panel style="height:110px;">
+						<p:graphicImage library="images" name="logo-SS.png"
+							style="height:100px;" />
 					</p:panel></td>
 			</tr>
 			<tr>
@@ -54,7 +54,7 @@
 						<p:menubar model="#{menuController.model}"
 							style="font-size:small;width:99%;background-color:#F4F4F4;font-weight:bold;">
 							<f:facet name="options">
-								<p:commandButton id="btnSalir" value="Salir"
+								<p:commandButton id="btnSalir" value="Salir" actionListener="#{loginController.logout}"
 									onclick="window.location='#{facesContext.externalContext.requestContextPath}/pages/login.xhtml';"
 									style="height:30px;" />
 							</f:facet>

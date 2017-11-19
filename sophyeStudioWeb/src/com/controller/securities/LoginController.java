@@ -28,9 +28,11 @@ public class LoginController {
 
 	@EJB
 	SecuritiesService securitiesService;
-	
+
 	@EJB
 	GeneralsService generalsService;
+
+	private boolean logueado;
 
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 
@@ -40,16 +42,16 @@ public class LoginController {
 	private String username;
 	private String password;
 	private List<Object> transacciones;
-	
+
 	@PostConstruct
-	public void init()
-	{
+	public void init() {
 		maxInactiveInterval = this.getmaxInactiveInterval();
 	}
 
 	/**
 	 * M&#233;todo para obtener el parametro de tiempo de sesi&#243;n activa
-	 * @return  Integer tiempo de sesi&#243;n
+	 * 
+	 * @return Integer tiempo de sesi&#243;n
 	 */
 	public Integer getmaxInactiveInterval() {
 		Integer val = null;
@@ -68,6 +70,7 @@ public class LoginController {
 
 	/**
 	 * M&#233;todo para validar las credenciales en el login
+	 * 
 	 * @param user
 	 * @param password
 	 * @return boolean
@@ -83,6 +86,7 @@ public class LoginController {
 
 	/**
 	 * M&#233;todo para realizar el login
+	 * 
 	 * @return String
 	 */
 	public String login() {
@@ -94,8 +98,10 @@ public class LoginController {
 			} else {
 
 				if (this.validateUser(username, password)) {
+					this.logueado = true;
 					request.getSession().setAttribute("usuario", username);
 				} else {
+					this.logueado = false;
 					context.addMessage("mensajePrincipal",
 							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Acceso", "Credenciales Invalidas"));
 					username = "";
@@ -107,6 +113,7 @@ public class LoginController {
 			context.addMessage("mensajePrincipal", new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Error en Autenticaci" + Constants.o_acentuada + "n ", null));
 			username = "";
+			this.logueado = false;
 			return null;
 		}
 		return URL_PAGINA_PRINCIPAL;
@@ -119,11 +126,16 @@ public class LoginController {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		request.getSession().invalidate();
+		this.logueado = false;
 		try {
 			request.logout();
 		} catch (ServletException e) {
 			logger.error("Error " + e.getMessage(), e);
 		}
+	}
+
+	public void logout() {
+		invalidarSesion();
 	}
 
 	/**
@@ -134,8 +146,7 @@ public class LoginController {
 		((HttpSession) ectx.getSession(false)).invalidate();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("#{LoginController}");
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("#{MenuController}");
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
-				.remove("#{UserAdministrationController}");
+		this.logueado = false;
 	}
 
 	public String getPassword() {
@@ -168,6 +179,14 @@ public class LoginController {
 
 	public void setMaxInactiveInterval(int maxInactiveInterval) {
 		this.maxInactiveInterval = maxInactiveInterval;
+	}
+
+	public boolean isLogueado() {
+		return logueado;
+	}
+
+	public void setLogueado(boolean logueado) {
+		this.logueado = logueado;
 	}
 
 }

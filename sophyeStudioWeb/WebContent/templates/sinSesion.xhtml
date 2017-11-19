@@ -28,23 +28,27 @@
 	<h:body>
 		<table width="75%" border="0" align="center">
 			<tr>
-				<td align="left" colspan="2"><p:panel style="height:70px;">
-						<p:graphicImage library="images" name="logoColor.jpg"
-							style="height:60px;" />
+				<td align="left" colspan="2"><p:panel style="height:110px;">
+						<p:graphicImage library="images" name="logo-SS.png"
+							style="height:100px; top:10px" />
 					</p:panel></td>
 			</tr>
 			<tr>
-				<td width="100%"><p:ajaxStatus onstart="statusDialog.show();"
-						onsuccess="statusDialog.hide();" /> <p:dialog modal="true"
+				<td width="100%">
+				<p:ajaxStatus onstart="statusDialog.show();"
+						onsuccess="statusDialog.hide();" /> 
+				<p:dialog modal="true"
 						widgetVar="statusDialog" draggable="false" closable="false"
 						resizable="false" header="Procesando..."
 						style="font-size:xx-small;">
 						<p:graphicImage library="images" name="ajax-loader.gif" />
-					</p:dialog> <h:panelGrid id="pgContent"
-						style="font-size:small;height: 500px;border-style:solid;border-color:Silver;border-width:thin;"
+				</p:dialog> 
+				<h:panelGrid id="pgContent"
+						style="font-size:small;height: 200px;border-style:solid;border-color:Silver;border-width:thin;"
 						width="100%">
 						<ui:insert name="contenido">Contenido</ui:insert>
-					</h:panelGrid></td>
+				</h:panelGrid>
+				</td>
 			</tr>
 		</table>
 	</h:body>

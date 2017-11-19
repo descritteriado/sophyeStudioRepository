@@ -35,5 +35,9 @@ public class Constants {
 	public static final String U_acentuada = Application.getString("letra.U_acentuada");
 
 	public static final String documentType= Application.getString("catalogue.documentType");
+	
+	public static final String idCedula= Application.getString("catalogueDetail.cedula");
+	public static final String idRuc= Application.getString("catalogueDetail.ruc");
+	public static final String idPasaporte= Application.getString("catalogueDetail.pasaporte");
 
 }

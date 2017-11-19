@@ -7,7 +7,7 @@
 
 <p:dialog id="dlgDeleteClient" modal="true" widgetVar="dlgDeleteClient"
 	closable="false" resizable="false" header="Eliminar Cliente"
-	style="font-size:xx-medium ;">
+	style="font-size:xx-medium;">
 	<h:form id="frmDlgDeleteClient">
 		<h:panelGrid id="gridDeleteClient" columns="1">
 			<p:messages id="messagesDeleteDialog" showDetail="false"
@@ -38,14 +38,14 @@
 </p:dialog>
 
 <p:dialog id="dlgNewClient" modal="true" widgetVar="dlgNewClient"
-	closable="true" resizable="false" header="Cliente"
-	style="font-size:xx-medium ;">
+	closable="true" resizable="false" header="Cliente" position="center center" 
+	style="font-size:xx-medium; max-height:95%; overflow-y: scroll;">
 	<h:form id="frmDlgNewClient">
 
 		<h:panelGrid id="gridNewClient" columns="1">
 			<p:messages id="messagesDialog" showDetail="false" autoUpdate="false"
 				closable="true" />
-			
+
 			<h:panelGrid id="gridNewClient1" columns="2" cellpadding="4">
 
 				<p:outputLabel for="editDocumentType"
@@ -71,7 +71,12 @@
 				<p:inputText id="editDocument" required="true"
 					value="#{clientAdministrationController.cliente.document}"
 					style="font-size: 12px; width:300px;"
-					rendered="#{clientAdministrationController.edition}" />
+					rendered="#{clientAdministrationController.edition}">
+					<p:ajax event="blur"
+						listener="#{clientAdministrationController.IdentificationValidator()}"
+						process="editDocument editDocumentType"
+						update="@this messagesDialog" />
+				</p:inputText>
 				<p:outputLabel id="viewDocument"
 					value="#{clientAdministrationController.cliente.document}"
 					style="font-size: 12px;"
@@ -104,7 +109,9 @@
 				<p:inputText id="editPhone1" required="true"
 					value="#{clientAdministrationController.cliente.phone1}"
 					style="font-size: 12px; width:300px;"
-					rendered="#{clientAdministrationController.edition}" />
+					rendered="#{clientAdministrationController.edition}"
+					onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+
 				<p:outputLabel id="viewPhone1"
 					value="#{clientAdministrationController.cliente.phone1}"
 					style="font-size: 12px;"
@@ -115,7 +122,8 @@
 				<p:inputText id="editPhone2" required="true"
 					value="#{clientAdministrationController.cliente.phone2}"
 					style="font-size: 12px; width:300px;"
-					rendered="#{clientAdministrationController.edition}" />
+					rendered="#{clientAdministrationController.edition}"
+					onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
 				<p:outputLabel id="viewPhone2"
 					value="#{clientAdministrationController.cliente.phone2}"
 					style="font-size: 12px;"
@@ -149,7 +157,8 @@
 				<p:selectBooleanButton id="editIsActive"
 					rendered="#{clientAdministrationController.edition}"
 					value="#{clientAdministrationController.cliente.status}"
-					style="font-size: 12px; width:60px" onLabel="Activo" offLabel="Inactivo" />
+					style="font-size: 12px; width:60px" onLabel="Activo"
+					offLabel="Inactivo" />
 				<p:outputLabel id="viewIsActive"
 					value="#{clientAdministrationController.cliente.status?'Activo':'Inactivo'}"
 					rendered="#{!clientAdministrationController.edition}"
@@ -194,7 +203,7 @@
 							rendered="#{clientAdministrationController.edition}">
 							<f:selectItems value="#{clientAdministrationController.cantones}"
 								var="canton" itemValue="#{canton.id}" itemLabel="#{canton.name}" />
-								<f:ajax event="change" execute="@this" render="editParroquia"
+							<f:ajax event="change" execute="@this" render="editParroquia"
 								listener="#{clientAdministrationController.consultParroquias}" />
 						</h:selectOneMenu>
 						<p:outputLabel id="viewCanton"
@@ -213,7 +222,7 @@
 							<f:selectItems
 								value="#{clientAdministrationController.parroquias}"
 								var="parroquia" itemValue="#{parroquia.id}"
-								itemLabel="#{parroquia.name}" />							
+								itemLabel="#{parroquia.name}" />
 						</h:selectOneMenu>
 						<p:outputLabel id="viewParroquia"
 							value="#{clientAdministrationController.cliente.parroquia.name}"

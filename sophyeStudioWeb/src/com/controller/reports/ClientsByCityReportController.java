@@ -7,11 +7,13 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.log4j.Logger;
 
+import com.controller.securities.LoginController;
 import com.ejb.services.ClientsService;
 import com.ejb.services.GeneralsService;
 import com.ejb.services.SecuritiesService;
@@ -33,7 +35,7 @@ public class ClientsByCityReportController extends AbstractReport {
 	private Integer cantonId;
 	private Integer parroquiaId;
 	private String reportFormat;
-	private final String REPORT_NAME = "clientByCity";
+	private final String REPORT_NAME = "clientsByCity";
 
 	final static Logger logger = Logger.getLogger(ClientsByCityReportController.class);
 
@@ -45,10 +47,14 @@ public class ClientsByCityReportController extends AbstractReport {
 
 	@EJB
 	GeneralsService generalsService;
+	
+	@ManagedProperty("#{loginController}")
+	private LoginController loginController;
 
 	@PostConstruct
 	public void init() {
 		try {
+			this.setCompileDir("/resources/reports/clients/");
 			provinces = generalsService.getProvinces(null, "");
 		} catch (Exception e) {
 			logger.error(e);
@@ -63,6 +69,7 @@ public class ClientsByCityReportController extends AbstractReport {
 		reportParameters.put("provinceId", this.provinceId);
 		reportParameters.put("cantonId", this.cantonId);
 		reportParameters.put("parroquiaId", this.parroquiaId);
+		reportParameters.put("user", loginController.getUsername());
 
 		return reportParameters;
 	}
@@ -179,6 +186,14 @@ public class ClientsByCityReportController extends AbstractReport {
 
 	public void setReportFormat(String reportFormat) {
 		this.reportFormat = reportFormat;
+	}
+
+	public LoginController getLoginController() {
+		return loginController;
+	}
+
+	public void setLoginController(LoginController loginController) {
+		this.loginController = loginController;
 	}
 
 }

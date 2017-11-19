@@ -1,5 +1,6 @@
 package com.controller.clients;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -55,19 +56,48 @@ public class ClientAdministrationController {
 	@PostConstruct
 	public void init() {
 
-		status=true;
-		
-		
+		status = true;
+	}
+
+	/**
+	 * Metodo para validar la identificacion
+	 */
+	public void IdentificationValidator() {
+		if (this.cliente.getDocumentType().getId() == UtilsX.getAsInteger(Constants.idCedula)) {
+
+			if (this.cliente.getDocument().length() == 10) {
+				if (!UtilsX.validadorDeIdentificacion(this.cliente.getDocument())) {
+					UtilsX.addErrorMessage("La c" + Constants.e_acentuada + "dula ingresada es incorrecta", null);
+					this.cliente.setDocument("");
+				}
+			} else {
+				UtilsX.addErrorMessage(
+						"La c" + Constants.e_acentuada + "dula debe contener 10 d" + Constants.i_acentuada + "gitos",
+						null);
+			}
+
+		}
+		if (this.cliente.getDocumentType().getId() == UtilsX.getAsInteger(Constants.idRuc)) {
+
+			if (this.cliente.getDocument().length() == 13) {
+				if (!UtilsX.validadorDeIdentificacion(this.cliente.getDocument())) {
+					UtilsX.addErrorMessage("El RUC ingresado es incorrecto" + Constants.i_acentuada + "gitos", null);
+					this.cliente.setDocument("");
+				}
+			} else {
+				UtilsX.addErrorMessage("El RUC debe contener 13 d" + Constants.i_acentuada + "gitos", null);
+			}
+
+		}
 
 	}
-	
-	public void editCLient()
-	{
+
+	public void editCLient() {
 		try {
-		documentTypes = generalsService.getCataloguesDetail(Integer.parseInt(Constants.documentType), "", "");
-		provinces = generalsService.getProvinces(null, "");
-		cantones = generalsService.getCantones(this.cliente.getProvince().getId(), null, "");
-		parroquias = generalsService.getParroquias(this.cliente.getCanton().getId(), null, "");
+			documentTypes = generalsService.getCataloguesDetail(Integer.parseInt(Constants.documentType), "", "");
+			provinces = generalsService.getProvinces(null, "");
+			cantones = generalsService.getCantones(this.cliente.getProvince().getId(), null, "");
+			parroquias = generalsService.getParroquias(this.cliente.getCanton().getId(), null, "");
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -122,6 +152,33 @@ public class ClientAdministrationController {
 	}
 
 	/**
+	 * Metodo para validar que el cliente exista
+	 */
+	public boolean existClient(String identificaction) {
+
+		boolean result = false;
+		List<Tcliclient> existente = new ArrayList<Tcliclient>();
+
+		try {
+			existente = clientsService.getClients(identificaction, "", "", null);
+
+		} catch (Exception e) {
+			logger.error(e);
+			result = false;
+
+		}
+
+		if (existente.size() > 0) {
+			String status = existente.get(0).getStatus() ? "ACTIVO" : "INACTIVO";
+			UtilsX.addErrorMessage("El cliente ya se encuentra registrado con estado " + status, null);
+			result = true;
+
+		}
+		return result;
+
+	}
+
+	/**
 	 * Metodo para obtener los clientes
 	 */
 	public void consultClients(String origin) {
@@ -148,9 +205,14 @@ public class ClientAdministrationController {
 
 	}
 
+	/**
+	 * Metodo para procesar el registro de un cliente
+	 */
 	public void processClient() {
-		this.mergeClient(actionType);
-		this.consultClients("back");
+		if (!existClient(this.cliente.getDocument())) {
+			this.mergeClient(actionType);
+			this.consultClients("back");
+		}
 	}
 
 	/**
